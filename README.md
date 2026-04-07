@@ -6,6 +6,8 @@ Disaggregated inference needs a glue layer between heterogeneous prefill and dec
 
 Seam Orchestrator explores that control layer. It sits above swappable transport backends such as mock transports, NIXL, or UCX, evaluates candidate paths using workload-aware policy, and makes explainable routing decisions that treat admissibility as a first-class concept.
 
+> KV cache transfer is not only a transport problem. In disaggregated inference, it becomes a policy problem at the seam between heterogeneous prefill and decode domains.
+
 ## What This Repo Is
 
 `seam-orchestrator` is a transport-agnostic orchestration layer for KV movement in disaggregated inference. It is designed as a policy/control layer above transport backends. It also demonstrates that the KV-transfer glue layer is prototypeable and backend-swappable, without claiming production parity with mature transport stacks.
@@ -211,11 +213,55 @@ Committed result artifacts:
 - [outputs/decision_trace_scenario_f.json](outputs/decision_trace_scenario_f.json)
 - [outputs/evaluation_summary.md](outputs/evaluation_summary.md)
 
+## Experimental Results
+
+The scenario demos show the thesis. The experiment harness adds controlled evidence. These runs are not transport benchmarks; they measure workload-aware admissibility, routing under gray degradation, healthy-path preservation, hysteresis stability, and alternate-path scarcity above the transport backend.
+
+### Headline Metrics
+
+| Metric | Result |
+| --- | --- |
+| Strict workloads preserved on healthy paths | `95.5%` |
+| Tolerant workloads admitted to degraded-but-usable paths | `82.6%` |
+| Healthy-headroom preservation in headroom-opportunity cases | `100.0%` |
+| Hysteresis oscillations avoided vs no-hysteresis baseline | `7` |
+
+### Admissibility Boundary Sweep
+
+Scenario E scales into a real sweep: the same candidate path remains admissible for batch traffic substantially longer than for interactive or release-sensitive work as latency inflation and jitter rise.
+
+![Experiment 1 admissibility boundary sweep](outputs/experiment_admissibility_boundary.svg)
+
+### Baseline Comparison
+
+Simple baselines miss critical policy information. Lowest-latency and binary-health-only preserve strict traffic well in these synthetic trials, but they fail to exploit degraded-but-usable capacity and fail to preserve healthy headroom intentionally. Capacity-only does preserve headroom, but at a major strict-workload cost.
+
+![Experiment 5 baseline comparison](outputs/experiment_baseline_comparison.svg)
+
+Committed experiment artifacts:
+
+- [outputs/experiment_summary.md](outputs/experiment_summary.md)
+- [outputs/experiment_admissibility_boundary.md](outputs/experiment_admissibility_boundary.md)
+- [outputs/experiment_capacity_tradeoff.md](outputs/experiment_capacity_tradeoff.md)
+- [outputs/experiment_hysteresis_stability.md](outputs/experiment_hysteresis_stability.md)
+- [outputs/experiment_alternate_scarcity.md](outputs/experiment_alternate_scarcity.md)
+- [outputs/experiment_baseline_comparison.md](outputs/experiment_baseline_comparison.md)
+
+## What the experiments show
+
+- Health is workload-relative. The same degraded path is acceptable for tolerant batch traffic longer than for interactive or release-sensitive traffic.
+- Healthy-path preservation matters. The healthiest path is not always the right path when its headroom should be reserved for high-criticality work.
+- Degraded-but-usable paths can be exploited safely for tolerant traffic. That is a policy decision, not a transport primitive.
+- Hysteresis prevents flapping. Staged restore reduces oscillation under noisy conditions.
+- Alternate-path scarcity changes the decision materially by raising `PRS` and `FAE`.
+- Naive routing loses important information. Lowest-latency, binary-health-only, and capacity-only each discard different parts of the control problem.
+
 ## Repository Layout
 
 ```text
 README.md
 evaluate.py
+experiments.py
 orchestrator.py
 pipeline.py
 transport.py
@@ -249,6 +295,12 @@ Generate output artifacts and a lightweight evaluation pass:
 python evaluate.py
 ```
 
+Generate controlled experiment sweeps and evidence artifacts:
+
+```bash
+python experiments.py
+```
+
 Run all scenarios:
 
 ```bash
@@ -261,6 +313,7 @@ python simulate.py --scenario all
 - The mock backend exists to exercise policy and routing behavior, not to benchmark transport.
 - NIXL and UCX shims are included as lightweight adapters to show where real transfer backends plug in.
 - The prototype stays compact on purpose: the goal is to make the policy thesis legible.
+- The experiments are synthetic by design: they are evidence for policy behavior, not claims about transport throughput.
 
 ## What's Next
 
@@ -276,3 +329,5 @@ python simulate.py --scenario all
 - [docs/replacement-path.md](docs/replacement-path.md)
 - [docs/scenarios.md](docs/scenarios.md)
 - [docs/extensions.md](docs/extensions.md)
+- [docs/experiments.md](docs/experiments.md)
+- [docs/blog-notes.md](docs/blog-notes.md)

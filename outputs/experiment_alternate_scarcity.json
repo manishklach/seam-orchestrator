@@ -1,0 +1,31 @@
+{
+  "points": [
+    {
+      "alternate_count": 0,
+      "batch_prs": 0.04,
+      "batch_fae": 0.3,
+      "batch_admissible_rate_pct": 100.0,
+      "batch_chosen_rate_pct": 100.0,
+      "release_prs": 0.19,
+      "release_fae": 2.86
+    },
+    {
+      "alternate_count": 1,
+      "batch_prs": 0.018,
+      "batch_fae": 0.19,
+      "batch_admissible_rate_pct": 100.0,
+      "batch_chosen_rate_pct": 100.0,
+      "release_prs": 0.083,
+      "release_fae": 1.79
+    },
+    {
+      "alternate_count": 3,
+      "batch_prs": 0.008,
+      "batch_fae": 0.15,
+      "batch_admissible_rate_pct": 100.0,
+      "batch_chosen_rate_pct": 100.0,
+      "release_prs": 0.04,
+      "release_fae": 1.44
+    }
+  ]
+}

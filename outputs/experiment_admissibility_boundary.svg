@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="860" height="360" viewBox="0 0 860 360" role="img" aria-label="Experiment 1: Admissibility vs degradation">
+<rect width="100%" height="100%" fill="#0B1220"/>
+<text x="70" y="28" fill="#E5EEF9" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700">Experiment 1: Admissibility vs degradation</text>
+<text x="70" y="344" fill="#9FB3C8" font-family="Arial, Helvetica, sans-serif" font-size="12">Degradation severity index</text>
+<text x="16" y="38" fill="#9FB3C8" font-family="Arial, Helvetica, sans-serif" font-size="12">Admissibility rate (%)</text>
+<line x1="70" y1="290" x2="770" y2="290" stroke="#5A6B82" stroke-width="1"/>
+<line x1="70" y1="50" x2="70" y2="290" stroke="#5A6B82" stroke-width="1"/>
+<line x1="70" y1="290.0" x2="770" y2="290.0" stroke="#1F3148" stroke-width="1"/>
+<text x="58" y="294.0" text-anchor="end" fill="#9FB3C8" font-family="Arial, Helvetica, sans-serif" font-size="11">0</text>
+<line x1="70" y1="230.0" x2="770" y2="230.0" stroke="#1F3148" stroke-width="1"/>
+<text x="58" y="234.0" text-anchor="end" fill="#9FB3C8" font-family="Arial, Helvetica, sans-serif" font-size="11">25</text>
+<line x1="70" y1="170.0" x2="770" y2="170.0" stroke="#1F3148" stroke-width="1"/>
+<text x="58" y="174.0" text-anchor="end" fill="#9FB3C8" font-family="Arial, Helvetica, sans-serif" font-size="11">50</text>
+<line x1="70" y1="110.0" x2="770" y2="110.0" stroke="#1F3148" stroke-width="1"/>
+<text x="58" y="114.0" text-anchor="end" fill="#9FB3C8" font-family="Arial, Helvetica, sans-serif" font-size="11">75</text>
+<line x1="70" y1="50.0" x2="770" y2="50.0" stroke="#1F3148" stroke-width="1"/>
+<text x="58" y="54.0" text-anchor="end" fill="#9FB3C8" font-family="Arial, Helvetica, sans-serif" font-size="11">100</text>
+<line x1="70.0" y1="50" x2="70.0" y2="290" stroke="#132238" stroke-width="1"/>
+<text x="70.0" y="308" text-anchor="middle" fill="#9FB3C8" font-family="Arial, Helvetica, sans-serif" font-size="11">1</text>
+<line x1="210.0" y1="50" x2="210.0" y2="290" stroke="#132238" stroke-width="1"/>
+<text x="210.0" y="308" text-anchor="middle" fill="#9FB3C8" font-family="Arial, Helvetica, sans-serif" font-size="11">2</text>
+<line x1="350.0" y1="50" x2="350.0" y2="290" stroke="#132238" stroke-width="1"/>
+<text x="350.0" y="308" text-anchor="middle" fill="#9FB3C8" font-family="Arial, Helvetica, sans-serif" font-size="11">3</text>
+<line x1="490.0" y1="50" x2="490.0" y2="290" stroke="#132238" stroke-width="1"/>
+<text x="490.0" y="308" text-anchor="middle" fill="#9FB3C8" font-family="Arial, Helvetica, sans-serif" font-size="11">4</text>
+<line x1="630.0" y1="50" x2="630.0" y2="290" stroke="#132238" stroke-width="1"/>
+<text x="630.0" y="308" text-anchor="middle" fill="#9FB3C8" font-family="Arial, Helvetica, sans-serif" font-size="11">5</text>
+<line x1="770.0" y1="50" x2="770.0" y2="290" stroke="#132238" stroke-width="1"/>
+<text x="770.0" y="308" text-anchor="middle" fill="#9FB3C8" font-family="Arial, Helvetica, sans-serif" font-size="11">6</text>
+<polyline fill="none" stroke="#2563EB" stroke-width="3" points="70.0,50.0 210.0,50.0 350.0,50.0 490.0,50.0 630.0,50.0 770.0,50.0"/>
+<circle cx="70.0" cy="50.0" r="3.5" fill="#2563EB"/>
+<circle cx="210.0" cy="50.0" r="3.5" fill="#2563EB"/>
+<circle cx="350.0" cy="50.0" r="3.5" fill="#2563EB"/>
+<circle cx="490.0" cy="50.0" r="3.5" fill="#2563EB"/>
+<circle cx="630.0" cy="50.0" r="3.5" fill="#2563EB"/>
+<circle cx="770.0" cy="50.0" r="3.5" fill="#2563EB"/>
+<rect x="790" y="54" width="12" height="12" fill="#2563EB" rx="2"/>
+<text x="808" y="64" fill="#D5E2F2" font-family="Arial, Helvetica, sans-serif" font-size="12">batch</text>
+<polyline fill="none" stroke="#F97316" stroke-width="3" points="70.0,50.0 210.0,76.6 350.0,116.7 490.0,263.4 630.0,290.0 770.0,290.0"/>
+<circle cx="70.0" cy="50.0" r="3.5" fill="#F97316"/>
+<circle cx="210.0" cy="76.6" r="3.5" fill="#F97316"/>
+<circle cx="350.0" cy="116.7" r="3.5" fill="#F97316"/>
+<circle cx="490.0" cy="263.4" r="3.5" fill="#F97316"/>
+<circle cx="630.0" cy="290.0" r="3.5" fill="#F97316"/>
+<circle cx="770.0" cy="290.0" r="3.5" fill="#F97316"/>
+<rect x="790" y="76" width="12" height="12" fill="#F97316" rx="2"/>
+<text x="808" y="86" fill="#D5E2F2" font-family="Arial, Helvetica, sans-serif" font-size="12">interactive</text>
+<polyline fill="none" stroke="#16A34A" stroke-width="3" points="70.0,50.0 210.0,249.9 350.0,290.0 490.0,290.0 630.0,290.0 770.0,290.0"/>
+<circle cx="70.0" cy="50.0" r="3.5" fill="#16A34A"/>
+<circle cx="210.0" cy="249.9" r="3.5" fill="#16A34A"/>
+<circle cx="350.0" cy="290.0" r="3.5" fill="#16A34A"/>
+<circle cx="490.0" cy="290.0" r="3.5" fill="#16A34A"/>
+<circle cx="630.0" cy="290.0" r="3.5" fill="#16A34A"/>
+<circle cx="770.0" cy="290.0" r="3.5" fill="#16A34A"/>
+<rect x="790" y="98" width="12" height="12" fill="#16A34A" rx="2"/>
+<text x="808" y="108" fill="#D5E2F2" font-family="Arial, Helvetica, sans-serif" font-size="12">release</text>
+</svg>

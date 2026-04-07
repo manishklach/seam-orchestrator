@@ -1,0 +1,34 @@
+{
+  "points": [
+    {
+      "healthy_active_sessions": 2,
+      "batch_on_degraded_rate_pct": 100.0,
+      "strict_on_healthy_rate_pct": 100.0,
+      "reroute_rate_pct": 33.3
+    },
+    {
+      "healthy_active_sessions": 4,
+      "batch_on_degraded_rate_pct": 100.0,
+      "strict_on_healthy_rate_pct": 97.2,
+      "reroute_rate_pct": 35.2
+    },
+    {
+      "healthy_active_sessions": 5,
+      "batch_on_degraded_rate_pct": 100.0,
+      "strict_on_healthy_rate_pct": 100.0,
+      "reroute_rate_pct": 33.3
+    },
+    {
+      "healthy_active_sessions": 6,
+      "batch_on_degraded_rate_pct": 100.0,
+      "strict_on_healthy_rate_pct": 91.7,
+      "reroute_rate_pct": 38.9
+    },
+    {
+      "healthy_active_sessions": 7,
+      "batch_on_degraded_rate_pct": 100.0,
+      "strict_on_healthy_rate_pct": 91.7,
+      "reroute_rate_pct": 38.9
+    }
+  ]
+}

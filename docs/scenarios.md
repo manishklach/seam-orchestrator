@@ -84,7 +84,7 @@ Takeaway:
 Each scenario prints:
 
 - a summary table by workload
-- a candidate explanation table
+- a decision record table
 
 The detailed tables surface:
 

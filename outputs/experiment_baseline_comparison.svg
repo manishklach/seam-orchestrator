@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="860" height="360" viewBox="0 0 860 360" role="img" aria-label="Experiment 5: Baseline comparison">
+<rect width="100%" height="100%" fill="#0B1220"/>
+<text x="70" y="28" fill="#E5EEF9" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700">Experiment 5: Baseline comparison</text>
+<line x1="70" y1="290" x2="810" y2="290" stroke="#5A6B82" stroke-width="1"/>
+<line x1="70" y1="50" x2="70" y2="290" stroke="#5A6B82" stroke-width="1"/>
+<line x1="70" y1="290.0" x2="810" y2="290.0" stroke="#1F3148" stroke-width="1"/>
+<text x="58" y="294.0" text-anchor="end" fill="#9FB3C8" font-family="Arial, Helvetica, sans-serif" font-size="11">0</text>
+<line x1="70" y1="230.0" x2="810" y2="230.0" stroke="#1F3148" stroke-width="1"/>
+<text x="58" y="234.0" text-anchor="end" fill="#9FB3C8" font-family="Arial, Helvetica, sans-serif" font-size="11">25</text>
+<line x1="70" y1="170.0" x2="810" y2="170.0" stroke="#1F3148" stroke-width="1"/>
+<text x="58" y="174.0" text-anchor="end" fill="#9FB3C8" font-family="Arial, Helvetica, sans-serif" font-size="11">50</text>
+<line x1="70" y1="110.0" x2="810" y2="110.0" stroke="#1F3148" stroke-width="1"/>
+<text x="58" y="114.0" text-anchor="end" fill="#9FB3C8" font-family="Arial, Helvetica, sans-serif" font-size="11">75</text>
+<line x1="70" y1="50.0" x2="810" y2="50.0" stroke="#1F3148" stroke-width="1"/>
+<text x="58" y="54.0" text-anchor="end" fill="#9FB3C8" font-family="Arial, Helvetica, sans-serif" font-size="11">100</text>
+<text x="193.3" y="308" text-anchor="middle" fill="#9FB3C8" font-family="Arial, Helvetica, sans-serif" font-size="11">strict success</text>
+<rect x="94.7" y="60.8" width="45.3" height="229.2" fill="#2563EB" rx="3"/>
+<rect x="144.0" y="50.0" width="45.3" height="240.0" fill="#F97316" rx="3"/>
+<rect x="193.3" y="50.0" width="45.3" height="240.0" fill="#16A34A" rx="3"/>
+<rect x="242.7" y="214.9" width="45.3" height="75.1" fill="#9333EA" rx="3"/>
+<text x="440.0" y="308" text-anchor="middle" fill="#9FB3C8" font-family="Arial, Helvetica, sans-serif" font-size="11">tolerant degraded use</text>
+<rect x="341.3" y="91.8" width="45.3" height="198.2" fill="#2563EB" rx="3"/>
+<rect x="390.7" y="290.0" width="45.3" height="0.0" fill="#F97316" rx="3"/>
+<rect x="440.0" y="290.0" width="45.3" height="0.0" fill="#16A34A" rx="3"/>
+<rect x="489.3" y="133.5" width="45.3" height="156.5" fill="#9333EA" rx="3"/>
+<text x="686.7" y="308" text-anchor="middle" fill="#9FB3C8" font-family="Arial, Helvetica, sans-serif" font-size="11">headroom preserved</text>
+<rect x="588.0" y="50.0" width="45.3" height="240.0" fill="#2563EB" rx="3"/>
+<rect x="637.3" y="290.0" width="45.3" height="0.0" fill="#F97316" rx="3"/>
+<rect x="686.7" y="290.0" width="45.3" height="0.0" fill="#16A34A" rx="3"/>
+<rect x="736.0" y="50.0" width="45.3" height="240.0" fill="#9333EA" rx="3"/>
+<rect x="670" y="54" width="12" height="12" fill="#2563EB" rx="2"/>
+<text x="688" y="64" fill="#D5E2F2" font-family="Arial, Helvetica, sans-serif" font-size="12">orchestrator</text>
+<rect x="670" y="76" width="12" height="12" fill="#F97316" rx="2"/>
+<text x="688" y="86" fill="#D5E2F2" font-family="Arial, Helvetica, sans-serif" font-size="12">lowest_latency</text>
+<rect x="670" y="98" width="12" height="12" fill="#16A34A" rx="2"/>
+<text x="688" y="108" fill="#D5E2F2" font-family="Arial, Helvetica, sans-serif" font-size="12">binary_health_only</text>
+<rect x="670" y="120" width="12" height="12" fill="#9333EA" rx="2"/>
+<text x="688" y="130" fill="#D5E2F2" font-family="Arial, Helvetica, sans-serif" font-size="12">capacity_only</text>
+</svg>

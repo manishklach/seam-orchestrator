@@ -1,0 +1,6 @@
+healthy_active_sessions,batch_on_degraded_rate_pct,strict_on_healthy_rate_pct,reroute_rate_pct,batch_on_degraded_count,strict_on_healthy_count
+2,100.0,100.0,33.3,18,36
+4,100.0,97.2,35.2,18,35
+5,100.0,100.0,33.3,18,36
+6,100.0,91.7,38.9,18,33
+7,100.0,91.7,38.9,18,33

@@ -1,0 +1,46 @@
+{
+  "orchestrator": {
+    "trials": 90,
+    "admissions": 90,
+    "rejections": 0,
+    "admitted_despite_degradation": 25,
+    "strict_workload_success_rate_pct": 95.5,
+    "tolerant_degraded_utilization_rate_pct": 82.6,
+    "healthy_headroom_preservation_rate_pct": 100.0,
+    "mean_prs": 0.004,
+    "mean_fae": 3.024
+  },
+  "lowest_latency": {
+    "trials": 90,
+    "admissions": 90,
+    "rejections": 0,
+    "admitted_despite_degradation": 0,
+    "strict_workload_success_rate_pct": 100.0,
+    "tolerant_degraded_utilization_rate_pct": 0.0,
+    "healthy_headroom_preservation_rate_pct": 0.0,
+    "mean_prs": 0.0,
+    "mean_fae": 3.354
+  },
+  "binary_health_only": {
+    "trials": 90,
+    "admissions": 90,
+    "rejections": 0,
+    "admitted_despite_degradation": 0,
+    "strict_workload_success_rate_pct": 100.0,
+    "tolerant_degraded_utilization_rate_pct": 0.0,
+    "healthy_headroom_preservation_rate_pct": 0.0,
+    "mean_prs": 0.0,
+    "mean_fae": 3.354
+  },
+  "capacity_only": {
+    "trials": 90,
+    "admissions": 90,
+    "rejections": 0,
+    "admitted_despite_degradation": 62,
+    "strict_workload_success_rate_pct": 31.3,
+    "tolerant_degraded_utilization_rate_pct": 65.2,
+    "healthy_headroom_preservation_rate_pct": 100.0,
+    "mean_prs": 0.019,
+    "mean_fae": 0.776
+  }
+}

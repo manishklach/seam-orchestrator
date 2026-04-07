@@ -186,13 +186,13 @@ async def scenario_e_gray_failure() -> None:
 
     print(format_table(SUMMARY_HEADERS, summary_rows))
 
-    print("\nCandidate explanation bundle for batch traffic:\n")
+    print("\nDecision record for batch traffic:\n")
     _, batch_decision = orchestrator.route_session(WORKLOAD_BATCH)
     print(format_table(CANDIDATE_HEADERS, render_candidate_rows(batch_decision.candidate_explanations)))
     if batch_decision.chosen_pool_id:
         orchestrator.release_session(batch_decision.chosen_pool_id)
 
-    print("\nCandidate explanation bundle for interactive traffic:\n")
+    print("\nDecision record for interactive traffic:\n")
     _, interactive_decision = orchestrator.route_session(WORKLOAD_INTERACTIVE)
     print(format_table(CANDIDATE_HEADERS, render_candidate_rows(interactive_decision.candidate_explanations)))
     if interactive_decision.chosen_pool_id:
@@ -261,7 +261,7 @@ async def scenario_f_capacity_pressure() -> None:
     print(format_table(SUMMARY_HEADERS, summary_rows))
 
     for workload_name in ("batch", "interactive-sync"):
-        print(f"\nCandidate explanation bundle for {workload_name}:\n")
+        print(f"\nDecision record for {workload_name}:\n")
         print(format_table(CANDIDATE_HEADERS, detailed_decisions[workload_name]))
 
 

@@ -1,0 +1,12 @@
+# Experiment 1: Admissibility Boundary Sweep
+
+Same candidate path, increasing latency and jitter, three workload classes.
+
+| Severity | Mean GFS | Mean p99 (ms) | Mean jitter (ms) | Dominant PathState | Batch admissibility % | Interactive admissibility % | Release admissibility % |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| 1 | 0.113 | 7.6 | 1.5 | healthy | 100.0 | 100.0 | 100.0 |
+| 2 | 0.187 | 12.3 | 2.6 | degraded_usable | 100.0 | 88.9 | 16.7 |
+| 3 | 0.236 | 15.6 | 3.2 | degraded_usable | 100.0 | 72.2 | 0.0 |
+| 4 | 0.327 | 21.3 | 4.7 | degraded_usable | 100.0 | 11.1 | 0.0 |
+| 5 | 0.358 | 23.3 | 5.1 | degraded_usable | 100.0 | 0.0 | 0.0 |
+| 6 | 0.482 | 30.7 | 7.3 | degraded_restricted | 100.0 | 0.0 | 0.0 |

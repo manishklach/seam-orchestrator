@@ -1,0 +1,72 @@
+{
+  "default": {
+    "transition_count": 1,
+    "oscillation_count": 0,
+    "state_distribution": {
+      "degraded_usable": 37,
+      "restored": 1
+    },
+    "first_24_states": [
+      "degraded_usable",
+      "degraded_usable",
+      "degraded_usable",
+      "degraded_usable",
+      "degraded_usable",
+      "degraded_usable",
+      "degraded_usable",
+      "degraded_usable",
+      "degraded_usable",
+      "degraded_usable",
+      "degraded_usable",
+      "degraded_usable",
+      "degraded_usable",
+      "degraded_usable",
+      "degraded_usable",
+      "degraded_usable",
+      "degraded_usable",
+      "degraded_usable",
+      "degraded_usable",
+      "degraded_usable",
+      "degraded_usable",
+      "degraded_usable",
+      "degraded_usable",
+      "degraded_usable"
+    ]
+  },
+  "no_hysteresis_baseline": {
+    "transition_count": 11,
+    "oscillation_count": 7,
+    "state_distribution": {
+      "degraded_usable": 23,
+      "restored": 4,
+      "healthy": 11
+    },
+    "first_24_states": [
+      "degraded_usable",
+      "degraded_usable",
+      "degraded_usable",
+      "degraded_usable",
+      "degraded_usable",
+      "degraded_usable",
+      "restored",
+      "healthy",
+      "healthy",
+      "degraded_usable",
+      "degraded_usable",
+      "degraded_usable",
+      "degraded_usable",
+      "degraded_usable",
+      "degraded_usable",
+      "restored",
+      "healthy",
+      "healthy",
+      "degraded_usable",
+      "degraded_usable",
+      "degraded_usable",
+      "degraded_usable",
+      "degraded_usable",
+      "degraded_usable"
+    ]
+  },
+  "oscillations_avoided": 7
+}

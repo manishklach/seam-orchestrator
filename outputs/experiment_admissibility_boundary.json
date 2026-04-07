@@ -1,0 +1,106 @@
+{
+  "points": [
+    {
+      "severity": 1,
+      "mean_gfs": 0.113,
+      "mean_p99_latency_ms": 7.6,
+      "mean_jitter_ms": 1.5,
+      "dominant_path_state": "healthy",
+      "admissibility_rate_pct": {
+        "batch": 100.0,
+        "interactive": 100.0,
+        "release": 100.0
+      },
+      "chosen_rate_pct": {
+        "batch": 0.0,
+        "interactive": 0.0,
+        "release": 0.0
+      }
+    },
+    {
+      "severity": 2,
+      "mean_gfs": 0.187,
+      "mean_p99_latency_ms": 12.3,
+      "mean_jitter_ms": 2.6,
+      "dominant_path_state": "degraded_usable",
+      "admissibility_rate_pct": {
+        "batch": 100.0,
+        "interactive": 88.9,
+        "release": 16.7
+      },
+      "chosen_rate_pct": {
+        "batch": 83.3,
+        "interactive": 0.0,
+        "release": 0.0
+      }
+    },
+    {
+      "severity": 3,
+      "mean_gfs": 0.236,
+      "mean_p99_latency_ms": 15.6,
+      "mean_jitter_ms": 3.2,
+      "dominant_path_state": "degraded_usable",
+      "admissibility_rate_pct": {
+        "batch": 100.0,
+        "interactive": 72.2,
+        "release": 0.0
+      },
+      "chosen_rate_pct": {
+        "batch": 100.0,
+        "interactive": 0.0,
+        "release": 0.0
+      }
+    },
+    {
+      "severity": 4,
+      "mean_gfs": 0.327,
+      "mean_p99_latency_ms": 21.3,
+      "mean_jitter_ms": 4.7,
+      "dominant_path_state": "degraded_usable",
+      "admissibility_rate_pct": {
+        "batch": 100.0,
+        "interactive": 11.1,
+        "release": 0.0
+      },
+      "chosen_rate_pct": {
+        "batch": 100.0,
+        "interactive": 0.0,
+        "release": 0.0
+      }
+    },
+    {
+      "severity": 5,
+      "mean_gfs": 0.358,
+      "mean_p99_latency_ms": 23.3,
+      "mean_jitter_ms": 5.1,
+      "dominant_path_state": "degraded_usable",
+      "admissibility_rate_pct": {
+        "batch": 100.0,
+        "interactive": 0.0,
+        "release": 0.0
+      },
+      "chosen_rate_pct": {
+        "batch": 100.0,
+        "interactive": 0.0,
+        "release": 0.0
+      }
+    },
+    {
+      "severity": 6,
+      "mean_gfs": 0.482,
+      "mean_p99_latency_ms": 30.7,
+      "mean_jitter_ms": 7.3,
+      "dominant_path_state": "degraded_restricted",
+      "admissibility_rate_pct": {
+        "batch": 100.0,
+        "interactive": 0.0,
+        "release": 0.0
+      },
+      "chosen_rate_pct": {
+        "batch": 100.0,
+        "interactive": 0.0,
+        "release": 0.0
+      }
+    }
+  ]
+}

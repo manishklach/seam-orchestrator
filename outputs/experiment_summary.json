@@ -1,0 +1,20 @@
+{
+  "key_findings": [
+    "Admissibility is workload-relative: the same degraded candidate remains acceptable for tolerant work longer than for interactive or release-sensitive work.",
+    "Capacity-aware policy preserves scarce healthy headroom for stricter traffic instead of always choosing the best raw health score.",
+    "Hysteresis materially reduces oscillation under noisy conditions compared with a no-hysteresis baseline.",
+    "Alternate-path scarcity raises PRS and FAE, making topology dependence visible in routing decisions.",
+    "Naive routing baselines lose signal that the orchestrator preserves, especially around headroom preservation and tolerant use of degraded-but-usable paths."
+  ],
+  "headline_metrics": {
+    "strict_workload_success_rate_pct": 95.5,
+    "tolerant_degraded_utilization_rate_pct": 82.6,
+    "healthy_headroom_preservation_rate_pct": 100.0,
+    "hysteresis_oscillations_avoided": 7
+  },
+  "baseline_deltas": {
+    "strict_vs_capacity_only_pct_points": 64.2,
+    "headroom_vs_binary_health_only_pct_points": 100.0,
+    "tolerant_use_vs_lowest_latency_pct_points": 82.6
+  }
+}
