@@ -59,7 +59,7 @@ Caption: the orchestrator owns admissibility, scoring, and routing; the transpor
 | --- | --- |
 | pool | decode resource group |
 | path | transfer path to that pool |
-| candidate | pool + path + current state snapshot |
+| candidate | pool + path + state snapshot |
 
 ## Can the glue layer be replaced?
 
@@ -90,7 +90,7 @@ That does not mean this repo is claiming production parity with mature transport
 | `PRS` | Propagation Risk Score. Estimates how much a bad routing choice could spread risk based on workload sensitivity, path dependence, and alternate-path scarcity. |
 | `FAE` | Failure Amplification Estimate. Connects local degradation to cluster-level blast radius. |
 | `WorkloadProfile` | Workload descriptor carrying latency SLA, jitter tolerance, sync frequency, checkpoint size, and release sensitivity. |
-| Decision record | Structured per-candidate explanation with `PathState`, `GFS`, `PRS`, `FAE`, admissibility, capacity, topology dependence, and chosen/skipped reason. |
+| Decision record | Structured explanation object with `PathState`, `GFS`, `PRS`, `FAE`, admissibility, capacity, topology dependence, and chosen/skipped reason. |
 | Hysteresis and staged restore | Fast escalation, slower recovery, and staged restore to avoid flapping. |
 
 ## Why Not Just Use NIXL Directly?

@@ -18,7 +18,7 @@ transport backend
 
 - pool: decode resource group
 - path: transfer path to that pool
-- candidate: pool + path + current state snapshot
+- candidate: pool + path + state snapshot
 
 ## Application or Session Layer
 
