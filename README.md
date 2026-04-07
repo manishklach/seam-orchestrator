@@ -1,14 +1,14 @@
 # Seam Orchestrator
 
-Transport-agnostic KV orchestration and workload-aware routing for disaggregated inference.
+A policy layer above transport for KV movement, workload-aware admissibility, and routing in disaggregated inference.
 
 Disaggregated inference needs a glue layer between heterogeneous prefill and decode domains. The interesting systems question is no longer only "can bytes move?" It is "is this path admissible for this workload right now?"
 
-Seam Orchestrator explores that control layer. It sits above transport backends such as mock transports, NIXL, or UCX, evaluates candidate paths using workload-aware policy, and makes explainable routing decisions that treat admissibility as a first-class concept.
+Seam Orchestrator explores that control layer. It sits above swappable transport backends such as mock transports, NIXL, or UCX, evaluates candidate paths using workload-aware policy, and makes explainable routing decisions that treat admissibility as a first-class concept.
 
 ## What This Repo Is
 
-`seam-orchestrator` is a transport-agnostic orchestration layer for KV movement in disaggregated inference. It is designed as a policy/control layer above transport backends, not as a replacement for them.
+`seam-orchestrator` is a transport-agnostic orchestration layer for KV movement in disaggregated inference. It is designed as a policy/control layer above transport backends. It also demonstrates that the KV-transfer glue layer is prototypeable and backend-swappable, without claiming production parity with mature transport stacks.
 
 The thesis is:
 
@@ -19,24 +19,24 @@ That control point becomes strategically important in disaggregated systems, whe
 
 ## What This Repo Is Not
 
-- Not a replacement for NIXL.
-- Not a replacement for UCX, libfabric, or RDMA transport stacks.
+- Not a full NIXL clone.
+- Not a full replacement for UCX, libfabric, or production RDMA transport stacks.
 - Not just a failure-injection toy.
 - Not a generic monitoring dashboard.
 - Not a transport microbenchmark project.
 
-The transport backend remains intentionally narrow. The main artifact here is the policy layer above transport.
+The transport backend remains intentionally narrow. The main artifact here is the policy layer above transport, even though the repo also demonstrates a credible replacement prototype path for the glue layer.
 
 ## Why This Matters
 
-Disaggregated inference creates a new systems boundary: the seam between prefill and decode. Once KV state moves across that seam, the important systems question is no longer only whether bytes can move. The system has to decide:
+Disaggregated inference creates a new systems boundary: the seam between prefill and decode. Prefill and decode can live on different domains, different accelerators, and different transport fabrics. Once KV state moves across that seam, the important systems question is no longer only whether bytes can move. The system has to decide:
 
 - Is this path admissible for release-critical traffic right now?
 - Should a degraded but still-live path remain open for batch traffic only?
 - Is the healthier pool too close to capacity to spend on tolerant work?
 - Does alternate-path scarcity change the risk of using a given pool?
 
-AWS publicly announced support for NIXL with EFA for LLM inference workloads, and AWS/Cerebras publicly described a disaggregated deployment where Trainium performs prefill, Cerebras performs decode, and KV cache moves over EFA between them. That is the broader context for this repo: not replacing transport, but adding a policy layer above it.
+AWS publicly announced support for NIXL with EFA for LLM inference workloads, and AWS/Cerebras publicly described a disaggregated deployment where Trainium performs prefill, Cerebras performs decode, and KV cache moves over EFA between them. That is the broader context for this repo: the strategic control point may shift from byte movement alone to interface, admissibility, routing, and policy above transport.
 
 References:
 
@@ -49,6 +49,8 @@ References:
 
 The application/session layer decides that a request needs decode capacity. Seam Orchestrator evaluates candidate paths, applies workload-aware admissibility and routing policy, and emits candidate explanations. The transport backend below it only moves KV state.
 
+Caption: the orchestrator owns admissibility, scoring, and routing; the transport backend is intentionally swappable underneath that layer.
+
 ### Terminology
 
 | Term | Meaning |
@@ -56,6 +58,26 @@ The application/session layer decides that a request needs decode capacity. Seam
 | pool | decode resource group |
 | path | transfer path to that pool |
 | candidate | pool + path + current state snapshot |
+
+## Can The Glue Layer Be Replaced?
+
+Yes, in prototype form.
+
+This repo demonstrates that the KV-transfer glue layer is not irreducibly tied to one backend implementation. A mock backend, a NIXL-backed path, a UCX-backed path, and future direct backends can all sit behind the same orchestration surface.
+
+That does not mean this repo is claiming production parity with mature transport stacks. It means a replacement-capable prototype path exists, the interface layer is real, and much of the strategically interesting software value sits above transport in admissibility, routing, explainability, hysteresis, and capacity-aware policy.
+
+## Layer Responsibilities
+
+| Concern | Transport backend layer | Seam Orchestrator layer |
+| --- | --- | --- |
+| Byte movement | Moves KV payloads between endpoints | Consumes transport outcomes but does not implement wire-level transport |
+| Backend compatibility | NIXL / UCX / mock / future direct backends | Works above any backend that satisfies the transport interface |
+| Workload-aware admissibility | Not responsible | Core responsibility |
+| Routing under degraded conditions | Not responsible | Core responsibility |
+| Capacity-aware policy | Not responsible | Core responsibility |
+| Hysteresis / staged restore | Not responsible | Core responsibility |
+| Candidate explanation / decision records | Not responsible | Core responsibility |
 
 ## Core Concepts
 
@@ -95,7 +117,7 @@ Scenario E is the core proof of the thesis.
 | `pool-0-degraded` | Reachable, elevated latency and jitter, KV transfer still succeeds | `DEGRADED_USABLE` | Admissible | Not admissible | Not admissible |
 | `pool-1-healthy` | Clean backup path with low latency and low jitter | `HEALTHY` | Admissible | Admissible | Admissible |
 
-Takeaway: a path can remain live and still become workload-selective rather than universally usable.
+Takeaway: a path can remain live, transfer successfully, and still become workload-selective rather than universally usable.
 
 ### Why Scenario E Matters
 
@@ -155,7 +177,7 @@ Structured JSONL event logs are written under `outputs/` and include:
 - rejections
 - reroutes
 
-## Concrete Output
+## Results
 
 Representative simulator output:
 
@@ -167,17 +189,20 @@ interactive | pool-1-healthy  | admitted              | healthy admissible pool 
 release     | pool-1-healthy  | admitted              | healthy admissible pool selected
 ```
 
-Phase 2 evaluation highlights from `python evaluate.py`:
+Lightweight evaluation highlights from `python evaluate.py`:
 
 - strict workloads preserved on healthy paths: `97.9%`
 - tolerant workloads admitted to degraded-but-usable paths: `91.7%`
 - capacity-pressure batch reroutes observed: `24 / 24` evaluation trials
 
-Phase 2 committed artifacts:
+Committed result artifacts:
 
 - [outputs/scenario_summary.md](outputs/scenario_summary.md)
+- [outputs/scenario_e_snippet.md](outputs/scenario_e_snippet.md)
+- [outputs/scenario_f_snippet.md](outputs/scenario_f_snippet.md)
 - [outputs/scenario_e_table.md](outputs/scenario_e_table.md)
 - [outputs/scenario_f_table.md](outputs/scenario_f_table.md)
+- [outputs/candidate_evaluation_example.md](outputs/candidate_evaluation_example.md)
 - [outputs/decision_trace_scenario_e.json](outputs/decision_trace_scenario_e.json)
 - [outputs/decision_trace_scenario_f.json](outputs/decision_trace_scenario_f.json)
 - [outputs/evaluation_summary.md](outputs/evaluation_summary.md)
@@ -194,6 +219,7 @@ simulate.py
 docs/
   architecture.md
   decision-model.md
+  replacement-path.md
   scenarios.md
   extensions.md
 outputs/
@@ -243,5 +269,6 @@ python simulate.py --scenario all
 
 - [docs/architecture.md](docs/architecture.md)
 - [docs/decision-model.md](docs/decision-model.md)
+- [docs/replacement-path.md](docs/replacement-path.md)
 - [docs/scenarios.md](docs/scenarios.md)
 - [docs/extensions.md](docs/extensions.md)

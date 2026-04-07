@@ -3,7 +3,7 @@
   <rect x="50" y="38" width="1060" height="644" rx="24" fill="#111A2B" stroke="#243246" stroke-width="2"/>
 
   <text x="80" y="92" fill="#E5EEF9" font-family="Arial, Helvetica, sans-serif" font-size="30" font-weight="700">Seam Orchestrator</text>
-  <text x="80" y="124" fill="#90A4C2" font-family="Arial, Helvetica, sans-serif" font-size="18">A policy layer above transport for KV movement in disaggregated inference</text>
+  <text x="80" y="124" fill="#90A4C2" font-family="Arial, Helvetica, sans-serif" font-size="18">Policy above transport, with swappable backends under a stable orchestration surface</text>
 
   <rect x="86" y="170" width="988" height="110" rx="18" fill="#12243B" stroke="#2B4A6B" stroke-width="2"/>
   <text x="118" y="208" fill="#F5FAFF" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700">Application / Session Layer</text>
@@ -11,7 +11,7 @@
 
   <rect x="86" y="316" width="988" height="238" rx="18" fill="#15263C" stroke="#4B6B8F" stroke-width="2"/>
   <text x="118" y="356" fill="#F5FAFF" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="700">Policy / Control Layer</text>
-  <text x="118" y="385" fill="#8FC5FF" font-family="Arial, Helvetica, sans-serif" font-size="18">Candidate evaluation and admissibility sit here, above the transport backend.</text>
+  <text x="118" y="385" fill="#8FC5FF" font-family="Arial, Helvetica, sans-serif" font-size="18">Candidate evaluation and admissibility sit here, above the transport backend abstraction.</text>
 
   <rect x="118" y="414" width="268" height="112" rx="16" fill="#0E1C2F" stroke="#335276" stroke-width="2"/>
   <text x="142" y="448" fill="#F5FAFF" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700">Workload Profiles</text>
@@ -29,10 +29,10 @@
   <text x="798" y="503" fill="#D3DDF0" font-family="Arial, Helvetica, sans-serif" font-size="16">candidate explanation + logs</text>
 
   <rect x="86" y="590" width="988" height="60" rx="18" fill="#101A27" stroke="#243246" stroke-width="2"/>
-  <text x="118" y="626" fill="#F5FAFF" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700">Transport Backends</text>
-  <text x="364" y="626" fill="#D3DDF0" font-family="Arial, Helvetica, sans-serif" font-size="18">MockBackend</text>
-  <text x="548" y="626" fill="#D3DDF0" font-family="Arial, Helvetica, sans-serif" font-size="18">NIXLBackend</text>
-  <text x="724" y="626" fill="#D3DDF0" font-family="Arial, Helvetica, sans-serif" font-size="18">UCXBackend</text>
+  <text x="118" y="626" fill="#F5FAFF" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700">Swappable Transport Backends</text>
+  <text x="418" y="626" fill="#D3DDF0" font-family="Arial, Helvetica, sans-serif" font-size="18">MockBackend</text>
+  <text x="602" y="626" fill="#D3DDF0" font-family="Arial, Helvetica, sans-serif" font-size="18">NIXLBackend</text>
+  <text x="778" y="626" fill="#D3DDF0" font-family="Arial, Helvetica, sans-serif" font-size="18">UCXBackend</text>
 
   <path d="M580 280V314" stroke="#87B8FF" stroke-width="3" stroke-linecap="round"/>
   <path d="M580 554V588" stroke="#87B8FF" stroke-width="3" stroke-linecap="round"/>
@@ -42,5 +42,5 @@
   <circle cx="580" cy="297" r="5" fill="#87B8FF"/>
   <circle cx="580" cy="571" r="5" fill="#87B8FF"/>
 
-  <text x="838" y="356" fill="#8FB2D4" font-family="Arial, Helvetica, sans-serif" font-size="16">policy over transport</text>
+  <text x="812" y="356" fill="#8FB2D4" font-family="Arial, Helvetica, sans-serif" font-size="16">policy over transport / backend-swappable glue</text>
 </svg>

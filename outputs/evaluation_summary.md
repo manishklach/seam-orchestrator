@@ -1,5 +1,7 @@
 # Evaluation Summary
 
+First lightweight aggregate pass over the current scenarios. The goal is not benchmarking transport; it is making the policy layer visibly measurable.
+
 | Metric | Value |
 | --- | --- |
 | trials | 24 |
@@ -16,7 +18,7 @@
 
 | Transition | Count |
 | --- | --- |
-| healthy->degraded_usable | 51 |
+| healthy->degraded_usable | 50 |
 | degraded_usable->degraded_restricted | 17 |
 | degraded_restricted->degraded_usable | 14 |
 | degraded_usable->restored | 3 |

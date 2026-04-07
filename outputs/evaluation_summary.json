@@ -5,7 +5,7 @@
   "rejections": 0,
   "admitted_despite_degradation": 49,
   "state_transition_counts": {
-    "healthy->degraded_usable": 51,
+    "healthy->degraded_usable": 50,
     "degraded_usable->degraded_restricted": 17,
     "degraded_restricted->degraded_usable": 14,
     "degraded_usable->restored": 3,

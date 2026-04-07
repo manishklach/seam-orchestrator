@@ -151,6 +151,20 @@ def representative_trace(record: Dict[str, Any]) -> Dict[str, Any]:
     }
 
 
+def decision_summary_rows(records: Sequence[Dict[str, Any]]) -> List[List[str]]:
+    rows: List[List[str]] = []
+    for record in records:
+        rows.append(
+            [
+                record["workload_name"],
+                record["chosen_pool_id"] or "-",
+                record["outcome"],
+                record["reason"],
+            ]
+        )
+    return rows
+
+
 async def generate_phase2_outputs() -> Dict[str, Any]:
     OUTPUTS_DIR.mkdir(exist_ok=True)
     for stale in OUTPUTS_DIR.glob("*.jsonl"):
@@ -255,6 +269,31 @@ async def generate_phase2_outputs() -> Dict[str, Any]:
             candidate_rows(scenario_f_batch),
         ),
     )
+    write_text(
+        OUTPUTS_DIR / "scenario_e_snippet.md",
+        "# Scenario E Output Snippet\n\n"
+        + markdown_table(
+            ["Workload", "Chosen path", "Outcome", "Routing rationale"],
+            decision_summary_rows(representative_records),
+        ),
+    )
+    write_text(
+        OUTPUTS_DIR / "scenario_f_snippet.md",
+        "# Scenario F Output Snippet\n\n"
+        + markdown_table(
+            ["Workload", "Chosen path", "Outcome", "Routing rationale"],
+            decision_summary_rows(scenario_f_records),
+        ),
+    )
+    write_text(
+        OUTPUTS_DIR / "candidate_evaluation_example.md",
+        "# Candidate Evaluation Example\n\n"
+        + "Representative interactive routing decision from Scenario E.\n\n"
+        + markdown_table(
+            ["Candidate path", "PathState", "GFS", "PRS", "FAE", "Capacity", "Admissible", "Chosen", "Reason"],
+            candidate_rows(scenario_e_interactive),
+        ),
+    )
 
     summary_rows = [
         [item["scenario"], item["name"], item["key_condition"], item["key_policy_outcome"], item["notable_result"]]
@@ -264,6 +303,7 @@ async def generate_phase2_outputs() -> Dict[str, Any]:
     write_text(
         OUTPUTS_DIR / "scenario_summary.md",
         "# Scenario Summary\n\n"
+        + "Compact summary of scenarios A-F and the policy behavior each one surfaces.\n\n"
         + markdown_table(
             ["Scenario", "Name", "Key condition", "Key policy outcome", "Notable result"],
             summary_rows,

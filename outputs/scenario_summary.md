@@ -1,5 +1,7 @@
 # Scenario Summary
 
+Compact summary of scenarios A-F and the policy behavior each one surfaces.
+
 | Scenario | Name | Key condition | Key policy outcome | Notable result |
 | --- | --- | --- | --- | --- |
 | A | Clean baseline | Both decode paths remain healthy. | Policy is largely invisible when every path is healthy and uncongested. | Healthy path selection dominates with minimal explanation burden. |

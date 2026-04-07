@@ -47,6 +47,8 @@ Responsibilities:
 
 This is what "policy above transport" means in practice. The orchestrator is not responsible for inventing a new transport stack. It is responsible for deciding whether and when to use the path a transport exposes.
 
+Because the orchestrator only depends on a narrow backend interface, the glue layer is also prototypeable and replaceable in practice. That is different from claiming production parity with every mature transport stack.
+
 ## Transport Backend Layer
 
 The backend contract is intentionally narrow:
