@@ -78,7 +78,7 @@ This step is intentionally separate from final selection. A pool can be admissib
 
 ## 7. Selection Policy
 
-After inadmissible pools are filtered out, the orchestrator chooses among admissible candidates using a decomposable policy:
+After inadmissible candidates are filtered out, the orchestrator chooses among admissible candidates using a decomposable policy:
 
 - `headroom_first` for tolerant workloads
 - `health_first` for strict workloads
@@ -114,3 +114,15 @@ State transitions use separate bad-window and clean-window counters:
 - no direct flap from degraded to healthy
 
 The same path can therefore remain observable, explainable, and policy-constrained throughout recovery.
+
+## 10. Why This Sits Above Transport
+
+The transport layer can report that a path is reachable and still moving bytes. That does not answer the policy question.
+
+The policy question is:
+
+- should this path be used for this workload now?
+- should this path be reserved for stricter work?
+- should tolerant traffic absorb degradation to preserve healthy headroom elsewhere?
+
+That is why this decision model belongs above transport. It assumes transport exists, but it does not reduce the orchestration problem to transport success/failure.

@@ -28,7 +28,7 @@ from transport import MockBackend
 
 BLOCK_SIZE = 512 * 1024
 OUTPUTS_DIR = Path("outputs")
-SUMMARY_HEADERS = ["Workload", "Chosen path", "Outcome", "Policy explanation"]
+SUMMARY_HEADERS = ["Workload", "Chosen path", "Outcome", "Routing rationale"]
 CANDIDATE_HEADERS = [
     "Candidate path",
     "PathState",
@@ -36,8 +36,8 @@ CANDIDATE_HEADERS = [
     "PRS",
     "FAE",
     "Capacity",
-    "Admissible?",
-    "Chosen?",
+    "Admissible",
+    "Chosen",
     "Reason",
 ]
 
@@ -153,8 +153,8 @@ async def scenario_d_drop_quarantine() -> None:
 
 async def scenario_e_gray_failure() -> None:
     header("Scenario E - Gray failure but not hard failure")
-    print("A degraded but still-live path remains admissible for tolerant traffic while")
-    print("interactive and release-sensitive workloads move to the clean pool.\n")
+    print("A degraded but still-live path remains admissible for tolerant traffic, while")
+    print("interactive and release-sensitive workloads move to the clean path.\n")
 
     orchestrator = SeamOrchestrator(event_log_path=OUTPUTS_DIR / "scenario_e_events.jsonl")
     orchestrator.register_pool("pool-0-degraded", "10.0.0.10", 8080, max_capacity=8)
@@ -186,13 +186,13 @@ async def scenario_e_gray_failure() -> None:
 
     print(format_table(SUMMARY_HEADERS, summary_rows))
 
-    print("\nCandidate bundle for batch traffic:\n")
+    print("\nCandidate explanation bundle for batch traffic:\n")
     _, batch_decision = orchestrator.route_session(WORKLOAD_BATCH)
     print(format_table(CANDIDATE_HEADERS, render_candidate_rows(batch_decision.candidate_explanations)))
     if batch_decision.chosen_pool_id:
         orchestrator.release_session(batch_decision.chosen_pool_id)
 
-    print("\nCandidate bundle for interactive traffic:\n")
+    print("\nCandidate explanation bundle for interactive traffic:\n")
     _, interactive_decision = orchestrator.route_session(WORKLOAD_INTERACTIVE)
     print(format_table(CANDIDATE_HEADERS, render_candidate_rows(interactive_decision.candidate_explanations)))
     if interactive_decision.chosen_pool_id:
@@ -201,8 +201,8 @@ async def scenario_e_gray_failure() -> None:
 
 async def scenario_f_capacity_pressure() -> None:
     header("Scenario F - Capacity pressure under gray failure")
-    print("The healthiest pool is near its soft capacity threshold, so batch traffic is")
-    print("sent to a degraded-but-admissible pool while stricter workloads preserve the")
+    print("The healthiest path is near its soft capacity threshold, so batch traffic is")
+    print("sent to a degraded-but-admissible path while stricter workloads preserve the")
     print("healthier path.\n")
 
     orchestrator = SeamOrchestrator(event_log_path=OUTPUTS_DIR / "scenario_f_events.jsonl")
@@ -262,7 +262,7 @@ async def scenario_f_capacity_pressure() -> None:
     print(format_table(SUMMARY_HEADERS, summary_rows))
 
     for workload_name in ("batch", "interactive-sync"):
-        print(f"\nCandidate bundle for {workload_name}:\n")
+        print(f"\nCandidate explanation bundle for {workload_name}:\n")
         print(format_table(CANDIDATE_HEADERS, detailed_decisions[workload_name]))
 
 

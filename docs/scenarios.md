@@ -75,3 +75,12 @@ The detailed tables surface:
 - chosen / skipped reason
 
 Structured machine-readable logs are also written under `outputs/` as JSONL.
+
+## Reading Scenario E and Scenario F Together
+
+Scenario E and Scenario F are the two anchor demos.
+
+- Scenario E shows that a live path can remain admissible for tolerant traffic while becoming inadmissible for stricter traffic.
+- Scenario F shows that even among admissible paths, policy may preserve the healthier path for stricter work and place tolerant work on a degraded-but-roomier path.
+
+Together, they define the category this repo is exploring: policy over transport for disaggregated inference.

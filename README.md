@@ -2,7 +2,7 @@
 
 Transport-agnostic KV orchestration for disaggregated inference.
 
-Disaggregated inference needs a glue layer between prefill and decode domains. This project explores that glue as a transport-agnostic orchestration layer for selecting paths, routing sessions, and applying workload-aware admissibility policy above the transfer backend.
+Disaggregated inference needs a glue layer between prefill and decode domains. This project explores that glue as a transport-agnostic orchestration layer for path selection, session routing, and workload-aware admissibility policy above the transfer backend.
 
 ## What This Repo Is
 
@@ -13,7 +13,7 @@ The central thesis is simple:
 - The interesting question is not only "can bytes move?"
 - The interesting question is "should this path be used for this workload right now?"
 
-That control point becomes strategically important in disaggregated systems, where KV transfer sits on the critical seam between prefill and decode.
+That control point becomes strategically important in disaggregated systems, where KV transfer sits on the seam between prefill and decode.
 
 ## What This Repo Is Not
 
@@ -27,7 +27,7 @@ The transport backend remains intentionally narrow. The main artifact here is th
 
 ## Why This Matters
 
-Disaggregated inference creates a new systems boundary: the seam between prefill and decode. Once KV state moves across that seam, the orchestration problem is no longer just transport plumbing. The system has to decide:
+Disaggregated inference creates a new systems boundary: the seam between prefill and decode. Once KV state moves across that seam, the systems problem is no longer just transport plumbing. The system has to decide:
 
 - Is this path admissible for release-critical traffic right now?
 - Should a degraded but still-live path remain open for batch traffic only?
@@ -60,7 +60,7 @@ transfer backends
   - UCXBackend
 ```
 
-The application or session layer decides that a request needs decode capacity. The orchestrator decides which path is admissible, which pool should be chosen, and why. The backend below it only handles the actual KV movement.
+The application or session layer decides that a request needs decode capacity. The orchestrator decides which path is admissible, which pool should be chosen, and why. The backend below it only moves KV state.
 
 ## Core Concepts
 
@@ -78,15 +78,15 @@ The application or session layer decides that a request needs decode capacity. T
 
 Scenario E is the core thesis demo.
 
-- The pool is still up.
+- The path is still up.
 - Transfers still succeed.
 - There is no hard failure.
 - The path remains admissible for tolerant traffic.
-- The same path is inadmissible for stricter workloads.
+- The same path is not admissible for stricter workloads.
 
 ### Scenario E Summary
 
-| Candidate path | Observed condition | `PathState` | Batch admissibility | Interactive admissibility | Release admissibility |
+| Candidate path | Observed condition | `PathState` | Batch admissibility | Interactive admissibility | Release-critical admissibility |
 | --- | --- | --- | --- | --- | --- |
 | `pool-0-degraded` | Reachable, elevated latency and jitter, KV transfer still succeeds | `DEGRADED_USABLE` | Admissible | Not admissible | Not admissible |
 | `pool-1-healthy` | Clean backup path with low latency and low jitter | `HEALTHY` | Admissible | Admissible | Admissible |
@@ -105,7 +105,7 @@ Scenario F extends the thesis beyond health-only reasoning.
 
 - One pool is healthier but near its soft capacity threshold.
 - Another pool is degraded but still admissible for tolerant work.
-- The orchestrator preserves the healthier path for stricter workloads and uses the degraded path for capacity-tolerant work when policy says headroom matters more.
+- The orchestrator preserves the healthier path for stricter workloads and uses the degraded path for capacity-tolerant work when headroom matters more than raw health.
 
 That makes the artifact stronger as a control-layer prototype: the healthiest pool is not always the right choice when headroom is scarce.
 
@@ -117,9 +117,9 @@ Routing stays decomposable rather than collapsing into one opaque score:
 2. Compute `GFS`, `PRS`, and `FAE`.
 3. Check workload-aware admissibility.
 4. Evaluate capacity snapshot and alternate-path dependence.
-5. Select from admissible pools using an explicit selection policy.
+5. Select from admissible paths using an explicit selection policy.
 
-Every route decision produces a candidate bundle with:
+Every route decision produces a candidate explanation bundle with:
 
 - pool id
 - `PathState`

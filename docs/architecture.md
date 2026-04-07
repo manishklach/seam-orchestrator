@@ -59,7 +59,7 @@ The repo stays transport-agnostic by keeping this interface small and keeping th
 
 ## Seam-Aware Orchestration
 
-The seam between prefill and decode is interesting because it carries both data and policy risk.
+The seam between prefill and decode is interesting because it carries both data risk and policy risk.
 
 Two paths can both be "up" while having very different suitability:
 
@@ -74,3 +74,5 @@ That is why the project emphasizes:
 - capacity-aware selection
 - explicit candidate explanations
 - staged recovery instead of binary up/down logic
+
+That is also why the project is intentionally not transport-centric. Transport remains a dependency of the seam. Policy is the subject of the repo.
