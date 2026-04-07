@@ -86,7 +86,7 @@ After inadmissible candidates are filtered out, the orchestrator chooses among a
 
 This keeps the decision interpretable. The repo does not collapse everything into one opaque mega-score.
 
-## 8. Candidate Explanation Bundle
+## 8. Decision Record
 
 Every evaluated candidate includes:
 
@@ -102,7 +102,7 @@ Every evaluated candidate includes:
 - chosen / skipped flag
 - skipped reason
 
-This is the core explainability artifact.
+This is the core explainability artifact for both per-candidate review and the final routing choice.
 
 ## 9. Hysteresis and Restore
 

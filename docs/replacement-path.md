@@ -47,7 +47,7 @@ Second, it highlights where the differentiating software value may sit:
 - workload-aware admissibility
 - routing under degraded or capacity-constrained conditions
 - hysteresis and staged restore
-- candidate explanations and decision records
+- decision records and routing explainability
 - policy over heterogeneous backend choices
 
 In other words, the strategic control point is not only byte movement itself. It is the interface plus the policy layer that decides when and how candidate paths should be used.

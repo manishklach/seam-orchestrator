@@ -47,7 +47,7 @@ References:
 
 ![Seam Orchestrator Architecture](docs/architecture.svg)
 
-The application/session layer decides that a request needs decode capacity. Seam Orchestrator evaluates candidate paths, applies workload-aware admissibility and routing policy, and emits candidate explanations. The transport backend below it only moves KV state.
+The application/session layer decides that a request needs decode capacity. Seam Orchestrator evaluates candidate paths, applies workload-aware admissibility and routing policy, and emits decision records. The transport backend below it only moves KV state.
 
 Caption: the orchestrator owns admissibility, scoring, and routing; the transport backend is intentionally swappable underneath that layer.
 
@@ -59,7 +59,7 @@ Caption: the orchestrator owns admissibility, scoring, and routing; the transpor
 | path | transfer path to that pool |
 | candidate | pool + path + current state snapshot |
 
-## Can The Glue Layer Be Replaced?
+## Can the glue layer be replaced?
 
 Yes, in prototype form.
 
@@ -77,7 +77,7 @@ That does not mean this repo is claiming production parity with mature transport
 | Routing under degraded conditions | Not responsible | Core responsibility |
 | Capacity-aware policy | Not responsible | Core responsibility |
 | Hysteresis / staged restore | Not responsible | Core responsibility |
-| Candidate explanation / decision records | Not responsible | Core responsibility |
+| Decision records / explainability | Not responsible | Core responsibility |
 
 ## Core Concepts
 
@@ -88,7 +88,7 @@ That does not mean this repo is claiming production parity with mature transport
 | `PRS` | Propagation Risk Score. Estimates how much a bad routing choice could spread risk based on workload sensitivity, path dependence, and alternate-path scarcity. |
 | `FAE` | Failure Amplification Estimate. Connects local degradation to cluster-level blast radius. |
 | `WorkloadProfile` | Workload descriptor carrying latency SLA, jitter tolerance, sync frequency, checkpoint size, and release sensitivity. |
-| Candidate explanation bundle | Structured per-candidate explanation with `PathState`, `GFS`, `PRS`, `FAE`, admissibility, capacity, topology dependence, and chosen/skipped reason. |
+| Decision record | Structured per-candidate explanation with `PathState`, `GFS`, `PRS`, `FAE`, admissibility, capacity, topology dependence, and chosen/skipped reason. |
 | Hysteresis and staged restore | Fast escalation, slower recovery, and staged restore to avoid flapping. |
 
 ## Why Not Just Use NIXL Directly?
@@ -109,6 +109,8 @@ Scenario E is the core proof of the thesis.
 - There is no hard failure.
 - The path remains admissible for tolerant traffic.
 - The same path is not admissible for stricter workloads.
+
+Same path. Same transfer mechanism. Different admissibility by workload.
 
 ### Scenario E Summary
 
@@ -137,6 +139,8 @@ Scenario F extends the thesis from admissibility into policy tradeoffs.
 
 That makes the artifact stronger as a control-layer prototype: the healthiest path is not always the right choice when headroom is scarce.
 
+Preserving scarce healthy headroom can matter more than always selecting the best raw health score.
+
 ### Scenario F Summary
 
 | Candidate path | Health posture | Capacity posture | Policy outcome |
@@ -156,7 +160,7 @@ Routing stays decomposable rather than collapsing into one opaque score:
 4. Evaluate capacity snapshot and alternate-path dependence.
 5. Select from admissible paths using an explicit selection policy.
 
-Every route decision produces a candidate explanation bundle with:
+Every route decision produces a decision record with:
 
 - candidate id
 - `PathState`
@@ -239,7 +243,7 @@ python simulate.py --scenario E
 python simulate.py --scenario F
 ```
 
-Generate Phase 2 artifacts and a lightweight evaluation pass:
+Generate output artifacts and a lightweight evaluation pass:
 
 ```bash
 python evaluate.py

@@ -42,7 +42,7 @@ Responsibilities:
 - estimate propagation and blast-radius effects with `PRS` and `FAE`
 - apply workload-aware admissibility policy
 - reason about capacity and alternate-path scarcity
-- emit candidate-by-candidate explanations
+- emit per-candidate decision records
 - serialize decisions and state transitions as JSONL events
 
 This is what "policy above transport" means in practice. The orchestrator is not responsible for inventing a new transport stack. It is responsible for deciding whether and when to use the path a transport exposes.
@@ -80,7 +80,7 @@ That is why the project emphasizes:
 
 - workload-relative admissibility
 - capacity-aware selection
-- explicit candidate explanations
+- explicit decision records
 - staged recovery instead of binary up/down logic
 
 That is also why the project is intentionally not transport-centric. Transport remains a dependency of the seam. Policy is the subject of the repo.
