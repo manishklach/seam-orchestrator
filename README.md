@@ -2,11 +2,13 @@
 
 **A policy layer above transport for KV movement, workload-aware admissibility, and routing in disaggregated inference.**
 
+[![Blog Post](https://img.shields.io/badge/Blog-Seam%20Orchestrator-blue)](https://manishklach.github.io/writings/seam-orchestrator-workload-aware-kv-routing-in-disaggregated-inference/)
+
 Disaggregated inference introduces a new control boundary between heterogeneous prefill and decode domains. While transport backends handle the mechanics of byte movement, the critical orchestration challenge is policy: *Is this specific path admissible for this specific workload, right now?*
 
 Seam Orchestrator is a reference implementation of this policy layer. It sits above swappable transport backends (e.g., NIXL, UCX, or mock providers), evaluates routing candidates through workload-aware admission logic, and emits auditable **Decision Records**. This transforms implicit routing choices into a programmable, auditable systems artifact.
 
-> KV cache transfer is not merely a transport problem; it is a policy problem at the seam of disaggregated systems.
+> KV cache transfer is not merely a transport problem; it is a policy problem at the seam of disaggregated systems. Read more: [Seam Orchestrator: Workload-Aware KV Routing](https://manishklach.github.io/writings/seam-orchestrator-workload-aware-kv-routing-in-disaggregated-inference/)
 
 ## What This Repo Is
 
@@ -44,7 +46,7 @@ The orchestrator sits between the session layer and the transport layer. It eval
 *   **Pool:** A decode resource group.
 *   **Path:** The transfer route to a specific pool.
 *   **Candidate:** A pool+path pairing with an active telemetry snapshot.
-*   **Admissibility:** A workload-specific boolean check (e.g., "Is this path safe for this SLA?").
+*   **Decision Record:** A structured explanation of a routing outcome.
 
 ## Can the glue layer be replaced?
 
@@ -58,7 +60,7 @@ Seam Orchestrator ties three concepts together into a coherent audit loop:
 
 1.  **Decision Records:** Every routing choice generates a structured explanation. This moves beyond "what happened" (transfer success) to "why it happened" (e.g., "rejected for jitter budget" or "rerouted to preserve healthy headroom").
 2.  **Tail-Latency ($p99$) Protection:** By treating latency and jitter as continuous signals rather than binary health, the orchestrator proactively protects strict SLAs from path degradation.
-3.  **Replayability:** Replay artifacts (JSONL/Markdown) allow researchers to audit decisions against synthetic or captured traces, making the value proposition concrete and testable.
+3.  **Replayability:** Replay artifacts allow researchers to audit decisions against synthetic or captured traces, making the value proposition concrete and testable.
 
 ---
 
@@ -82,10 +84,10 @@ Weights and thresholds are explicit, not opaque. For example, `GFS` weighs $p99$
 
 ## Scenario Narrative: Admissibility vs. Trade-off
 
-### Scenario E: Workload-Relative Admissibility
+### Scenario E: Workload-Relative Admissibility (Tail-Latency Protection)
 *The "p99 Protection" Demo.*
 In this scenario, a path is still "up" (transfers succeed) but exhibits elevated jitter. 
-*   **Result:** The orchestrator deems the path admissible for **Batch** (payloads move) but rejects it for **Interactive** traffic to protect the user experience from tail-latency poisoning.
+*   **Result:** The orchestrator deems the path admissible for **Batch** (payloads move) but rejects it for **Interactive** traffic to protect $p99$ behavior.
 *   **Takeaway:** Health is not binary; it is relative to the workload's SLA.
 
 ### Scenario F: Capacity vs. Health Trade-off
@@ -101,10 +103,10 @@ The repo includes a full simulation and evaluation suite that generates auditabl
 ### Headline Metrics
 *   **Strict Workload Preservation:** `95.5%` of high-criticality requests kept on HSL-compliant paths.
 *   **Degraded Capacity Exploitation:** `82.6%` of tolerant requests successfully used "still-alive" degraded paths.
-*   **Headroom Preservation:** `100.0%` success in reserving healthy paths during capacity pressure events.
+*   **Headroom Preservation:** `100.0% success` in reserving healthy paths during capacity pressure events.
 
 ### Replay Auditability
-Replay makes the value proposition testable by comparing Seam Orchestrator against naive policies (e.g., `lowest_latency` or `binary_health_only`) using the same request trace.
+Replay makes the value proposition testable by comparing Seam Orchestrator against naive policies using the same request trace.
 
 | Policy | Strict Healthy % | Tolerant Degraded % | Decision Audit |
 | :--- | :---: | :---: | :--- |
@@ -141,6 +143,7 @@ python replay.py
 ```
 
 ## Further Reading
+*   [Blog: Seam Orchestrator](https://manishklach.github.io/writings/seam-orchestrator-workload-aware-kv-routing-in-disaggregated-inference/) - Implementation details and systems context.
 *   [Scoring Specification](docs/scoring-spec.md) - Deep dive into GFS/PRS/FAE math.
 *   [Architecture Deep Dive](docs/architecture.md) - Component interactions and state machine.
 *   [Replacement Path](docs/replacement-path.md) - The roadmap for backend integration.
