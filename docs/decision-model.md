@@ -13,7 +13,7 @@ Each decode path is modeled as one of:
 - `QUARANTINED`
 - `RESTORED`
 
-This is a non-binary model of path quality. A path can be alive without being equally suitable for every workload.
+This is a non-binary model of path quality. A path can be live without being equally suitable for every workload.
 
 ## 2. Gray Failure Score (`GFS`)
 
@@ -52,7 +52,7 @@ The intuition:
 
 ## 5. Capacity Snapshot
 
-Each candidate pool carries a structured capacity snapshot:
+Each candidate carries a structured capacity snapshot:
 
 - active sessions
 - max capacity
@@ -72,9 +72,9 @@ Examples:
 
 - release-critical workloads can be blocked on `DEGRADED_USABLE`
 - lower-criticality workloads can still use `DEGRADED_RESTRICTED`
-- soft or hard capacity pressure can change whether a pool remains a good candidate
+- soft or hard capacity pressure can change whether a candidate remains a good choice
 
-This step is intentionally separate from final selection. A pool can be admissible yet still lose the final routing decision because another admissible pool better matches the current policy objective.
+This step is intentionally separate from final selection. A candidate can be admissible yet still lose the final routing decision because another admissible candidate better matches the current policy objective.
 
 ## 7. Selection Policy
 
@@ -90,7 +90,7 @@ This keeps the decision interpretable. The repo does not collapse everything int
 
 Every evaluated candidate includes:
 
-- pool id
+- candidate id
 - current `PathState`
 - `GFS`
 - `PRS`

@@ -34,7 +34,7 @@ Purpose:
 Purpose:
 
 - demonstrate the category-defining idea
-- show a pool that is still up and transferring KV successfully
+- show a path that is still up and transferring KV successfully
 - admit tolerant work on that path while stricter work moves elsewhere
 
 Expected behavior:
@@ -43,12 +43,17 @@ Expected behavior:
 - interactive traffic prefers the clean backup
 - release-critical traffic is not admissible on the degraded path
 
+| Candidate path | Transport outcome | `PathState` | Batch | Interactive | Release-critical |
+| --- | --- | --- | --- | --- | --- |
+| Degraded path | Transfer succeeds | `DEGRADED_USABLE` | Admissible | Not admissible | Not admissible |
+| Healthy path | Transfer succeeds | `HEALTHY` | Admissible | Admissible | Admissible |
+
 ## Scenario F: Capacity Pressure Under Gray Failure
 
 Purpose:
 
 - show that routing is not only about health
-- preserve the healthiest pool for stricter workloads when it is near soft capacity
+- preserve the healthiest path for stricter workloads when it is near soft capacity
 - allow a degraded-but-admissible pool to absorb tolerant traffic
 
 Expected behavior:
@@ -56,6 +61,11 @@ Expected behavior:
 - tolerant batch work may choose the roomier degraded path
 - stricter interactive work prefers the healthier path
 - the decision is framed as a policy tradeoff, not score worship
+
+| Candidate path | Health posture | Capacity posture | Policy result |
+| --- | --- | --- | --- |
+| Healthier path | `HEALTHY` | Near soft limit | Preserved for stricter work |
+| Degraded path | `DEGRADED_USABLE` | More headroom | Used for tolerant work when admissible |
 
 ## Reading the Output
 

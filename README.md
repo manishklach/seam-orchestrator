@@ -2,13 +2,13 @@
 
 Transport-agnostic KV orchestration for disaggregated inference.
 
-Disaggregated inference needs a glue layer between prefill and decode domains. This project explores that glue as a transport-agnostic orchestration layer for path selection, session routing, and workload-aware admissibility policy above the transfer backend.
+Disaggregated inference needs a glue layer between prefill and decode domains. `seam-orchestrator` explores that glue as a transport-agnostic orchestration layer for path selection, session routing, and workload-aware admissibility above the transport backend.
 
 ## What This Repo Is
 
-`seam-orchestrator` is a prototype policy layer for KV movement in disaggregated inference systems. It sits above transfer backends such as mock transports, NIXL, or UCX, and makes workload-aware routing and admissibility decisions across heterogeneous prefill and decode pools.
+`seam-orchestrator` is a prototype policy layer for KV movement in disaggregated inference systems. It sits above transport backends such as mock transports, NIXL, or UCX, and makes workload-aware routing and admissibility decisions across heterogeneous prefill and decode pools.
 
-The central thesis is simple:
+The thesis is simple:
 
 - The interesting question is not only "can bytes move?"
 - The interesting question is "should this path be used for this workload right now?"
@@ -27,7 +27,7 @@ The transport backend remains intentionally narrow. The main artifact here is th
 
 ## Why This Matters
 
-Disaggregated inference creates a new systems boundary: the seam between prefill and decode. Once KV state moves across that seam, the systems problem is no longer just transport plumbing. The system has to decide:
+Disaggregated inference creates a new systems boundary: the seam between prefill and decode. Once KV state moves across that seam, the important systems question is no longer only whether bytes can move. The system has to decide:
 
 - Is this path admissible for release-critical traffic right now?
 - Should a degraded but still-live path remain open for batch traffic only?
@@ -54,13 +54,13 @@ seam-orchestrator
   - staged restore and hysteresis
         |
         v
-transfer backends
+transport backends
   - MockBackend
   - NIXLBackend
   - UCXBackend
 ```
 
-The application or session layer decides that a request needs decode capacity. The orchestrator decides which path is admissible, which pool should be chosen, and why. The backend below it only moves KV state.
+The application or session layer decides that a request needs decode capacity. The orchestrator decides which path is admissible, which candidate should be chosen, and why. The backend below it only moves KV state.
 
 ## Core Concepts
 
@@ -71,12 +71,12 @@ The application or session layer decides that a request needs decode capacity. T
 | `PRS` | Propagation Risk Score. Estimates how much a bad routing choice could spread risk based on workload sensitivity, path dependence, and alternate-path scarcity. |
 | `FAE` | Failure Amplification Estimate. Connects local degradation to cluster-level blast radius. |
 | `WorkloadProfile` | Workload descriptor carrying latency SLA, jitter tolerance, sync frequency, checkpoint size, and release sensitivity. |
-| Candidate explanation bundle | Structured per-pool explanation with `PathState`, `GFS`, `PRS`, `FAE`, admissibility, capacity, topology dependence, and chosen/skipped reason. |
+| Candidate explanation bundle | Structured per-candidate explanation with `PathState`, `GFS`, `PRS`, `FAE`, admissibility, capacity, topology dependence, and chosen/skipped reason. |
 | Hysteresis and staged restore | Fast escalation, slower recovery, and staged restore to avoid flapping. |
 
 ## Scenario E: Category-Defining Demo
 
-Scenario E is the core thesis demo.
+Scenario E is the core proof of the thesis.
 
 - The path is still up.
 - Transfers still succeed.
@@ -101,13 +101,13 @@ This is the point of the project:
 
 ## Scenario F: Capacity Pressure Under Gray Failure
 
-Scenario F extends the thesis beyond health-only reasoning.
+Scenario F extends the thesis from admissibility into policy tradeoffs.
 
-- One pool is healthier but near its soft capacity threshold.
-- Another pool is degraded but still admissible for tolerant work.
+- One candidate path is healthier but near its soft capacity threshold.
+- Another candidate path is degraded but still admissible for tolerant work.
 - The orchestrator preserves the healthier path for stricter workloads and uses the degraded path for capacity-tolerant work when headroom matters more than raw health.
 
-That makes the artifact stronger as a control-layer prototype: the healthiest pool is not always the right choice when headroom is scarce.
+That makes the artifact stronger as a control-layer prototype: the healthiest path is not always the right choice when headroom is scarce.
 
 ## Explainability and Logs
 
@@ -121,7 +121,7 @@ Routing stays decomposable rather than collapsing into one opaque score:
 
 Every route decision produces a candidate explanation bundle with:
 
-- pool id
+- candidate id
 - `PathState`
 - `GFS`
 - `PRS`

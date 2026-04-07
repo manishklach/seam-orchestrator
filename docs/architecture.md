@@ -11,7 +11,7 @@ application/session layer
 seam-orchestrator
         |
         v
-transfer backend
+transport backend
 ```
 
 ## Application or Session Layer
@@ -41,7 +41,7 @@ Responsibilities:
 
 This is what "policy above transport" means in practice. The orchestrator is not responsible for inventing a new transport stack. It is responsible for deciding whether and when to use the path a transport exposes.
 
-## Transfer Backend Layer
+## Transport Backend Layer
 
 The backend contract is intentionally narrow:
 
@@ -61,7 +61,7 @@ The repo stays transport-agnostic by keeping this interface small and keeping th
 
 The seam between prefill and decode is interesting because it carries both data risk and policy risk.
 
-Two paths can both be "up" while having very different suitability:
+Two paths can both be up while having very different suitability:
 
 - one may be acceptable for batch work
 - the other may be required for release-critical traffic

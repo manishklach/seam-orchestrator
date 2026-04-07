@@ -153,8 +153,8 @@ async def scenario_d_drop_quarantine() -> None:
 
 async def scenario_e_gray_failure() -> None:
     header("Scenario E - Gray failure but not hard failure")
-    print("A degraded but still-live path remains admissible for tolerant traffic, while")
-    print("interactive and release-sensitive workloads move to the clean path.\n")
+    print("The path stays up, transfers still succeed, and admission splits by workload.")
+    print("Tolerant traffic can use the degraded path while stricter traffic moves cleanly.\n")
 
     orchestrator = SeamOrchestrator(event_log_path=OUTPUTS_DIR / "scenario_e_events.jsonl")
     orchestrator.register_pool("pool-0-degraded", "10.0.0.10", 8080, max_capacity=8)
@@ -201,9 +201,8 @@ async def scenario_e_gray_failure() -> None:
 
 async def scenario_f_capacity_pressure() -> None:
     header("Scenario F - Capacity pressure under gray failure")
-    print("The healthiest path is near its soft capacity threshold, so batch traffic is")
-    print("sent to a degraded-but-admissible path while stricter workloads preserve the")
-    print("healthier path.\n")
+    print("The healthiest path is near soft capacity, so policy preserves it for stricter")
+    print("workloads and uses a degraded-but-admissible path for tolerant traffic.\n")
 
     orchestrator = SeamOrchestrator(event_log_path=OUTPUTS_DIR / "scenario_f_events.jsonl")
     orchestrator.register_pool(
