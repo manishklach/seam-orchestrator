@@ -1,0 +1,139 @@
+{
+  "workload": "batch",
+  "outcome": "rerouted_to_alternate",
+  "reason": "headroom_first selected pool-degraded-roomy over healthier pool-healthy-tight",
+  "chosen_candidate": {
+    "pool_id": "pool-degraded-roomy",
+    "path_state": "degraded_usable",
+    "gfs": 0.2872,
+    "prs": 0.01,
+    "fae": 0.0653,
+    "admissible": true,
+    "primary_reason": "degraded_usable remains admissible for workload criticality 0.20",
+    "capacity_snapshot": {
+      "active_sessions": 2,
+      "max_capacity": 8,
+      "soft_limit": 6,
+      "utilization": 0.25,
+      "remaining": 6,
+      "soft_saturated": false,
+      "hard_saturated": false
+    },
+    "topology": {
+      "pool_id": "pool-degraded-roomy",
+      "alternate_pool_ids": [
+        "pool-healthy-tight"
+      ],
+      "available_alternate_pool_ids": [
+        "pool-healthy-tight"
+      ]
+    },
+    "health_snapshot": {
+      "p99_latency_ms": 15.058571943943885,
+      "jitter_ms": 6.282087401644961,
+      "mean_drop_rate": 0.0,
+      "sample_count": 10
+    },
+    "chosen": true,
+    "skipped_reason": null,
+    "selection_policy": "headroom_first",
+    "selection_vector": [
+      0.0,
+      0.0,
+      0.25,
+      0.2,
+      0.2872,
+      -6.0
+    ]
+  },
+  "candidate_explanations": [
+    {
+      "pool_id": "pool-healthy-tight",
+      "path_state": "healthy",
+      "gfs": 0.0339,
+      "prs": 0.0,
+      "fae": 1.3125,
+      "admissible": true,
+      "primary_reason": "healthy path",
+      "capacity_snapshot": {
+        "active_sessions": 7,
+        "max_capacity": 8,
+        "soft_limit": 6,
+        "utilization": 0.875,
+        "remaining": 1,
+        "soft_saturated": true,
+        "hard_saturated": false
+      },
+      "topology": {
+        "pool_id": "pool-healthy-tight",
+        "alternate_pool_ids": [
+          "pool-degraded-roomy"
+        ],
+        "available_alternate_pool_ids": [
+          "pool-degraded-roomy"
+        ]
+      },
+      "health_snapshot": {
+        "p99_latency_ms": 2.428833096547775,
+        "jitter_ms": 0.35237126385100226,
+        "mean_drop_rate": 0.0,
+        "sample_count": 10
+      },
+      "chosen": false,
+      "skipped_reason": "headroom_first preferred pool-degraded-roomy (2/8) over pool-healthy-tight (7/8)",
+      "selection_policy": "headroom_first",
+      "selection_vector": [
+        1.0,
+        1.0,
+        0.875,
+        0.0,
+        0.0339,
+        -1.0
+      ]
+    },
+    {
+      "pool_id": "pool-degraded-roomy",
+      "path_state": "degraded_usable",
+      "gfs": 0.2872,
+      "prs": 0.01,
+      "fae": 0.0653,
+      "admissible": true,
+      "primary_reason": "degraded_usable remains admissible for workload criticality 0.20",
+      "capacity_snapshot": {
+        "active_sessions": 2,
+        "max_capacity": 8,
+        "soft_limit": 6,
+        "utilization": 0.25,
+        "remaining": 6,
+        "soft_saturated": false,
+        "hard_saturated": false
+      },
+      "topology": {
+        "pool_id": "pool-degraded-roomy",
+        "alternate_pool_ids": [
+          "pool-healthy-tight"
+        ],
+        "available_alternate_pool_ids": [
+          "pool-healthy-tight"
+        ]
+      },
+      "health_snapshot": {
+        "p99_latency_ms": 15.058571943943885,
+        "jitter_ms": 6.282087401644961,
+        "mean_drop_rate": 0.0,
+        "sample_count": 10
+      },
+      "chosen": true,
+      "skipped_reason": null,
+      "selection_policy": "headroom_first",
+      "selection_vector": [
+        0.0,
+        0.0,
+        0.25,
+        0.2,
+        0.2872,
+        -6.0
+      ]
+    }
+  ]
+}

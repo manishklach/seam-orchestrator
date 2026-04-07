@@ -1,0 +1,46 @@
+{
+  "scenarios": [
+    {
+      "scenario": "A",
+      "name": "Clean baseline",
+      "key_condition": "Both decode paths remain healthy.",
+      "key_policy_outcome": "Policy is largely invisible when every path is healthy and uncongested.",
+      "notable_result": "Healthy path selection dominates with minimal explanation burden."
+    },
+    {
+      "scenario": "B",
+      "name": "Latency degradation",
+      "key_condition": "Latency rises before hard failure.",
+      "key_policy_outcome": "High-criticality workloads stop using the degraded path before transport fails outright.",
+      "notable_result": "Admissibility shifts before binary reachability changes."
+    },
+    {
+      "scenario": "C",
+      "name": "Jitter storm",
+      "key_condition": "Latency variance rises while paths remain live.",
+      "key_policy_outcome": "Jitter-sensitive workloads are protected without treating the path as fully down.",
+      "notable_result": "PathState and admissibility diverge from binary transport health."
+    },
+    {
+      "scenario": "D",
+      "name": "Drop storm to quarantine",
+      "key_condition": "Persistent bad windows push a path toward quarantine.",
+      "key_policy_outcome": "Escalation is fast, recovery is slower, and hysteresis avoids flapping.",
+      "notable_result": "State transitions expose why a path becomes temporarily inadmissible."
+    },
+    {
+      "scenario": "E",
+      "name": "Gray failure but not hard failure",
+      "key_condition": "A degraded path stays live and transfers succeed.",
+      "key_policy_outcome": "Admissibility splits by workload sensitivity.",
+      "notable_result": "Batch stays admissible on DEGRADED_USABLE while strict workloads move healthy."
+    },
+    {
+      "scenario": "F",
+      "name": "Capacity pressure under gray failure",
+      "key_condition": "The healthiest path is near soft capacity while a degraded path keeps headroom.",
+      "key_policy_outcome": "Policy preserves healthy headroom for stricter workloads and spends degraded headroom on tolerant work.",
+      "notable_result": "The healthiest path is not always the selected path."
+    }
+  ]
+}

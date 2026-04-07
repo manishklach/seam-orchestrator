@@ -2,7 +2,7 @@
 
 The orchestrator keeps routing explainable by separating signal calculation, admissibility, and selection. The model is intentionally policy-first: transport reports what happened on the path, while the orchestrator decides whether that path should carry a workload now.
 
-## 1. Path State
+## 1. `PathState`
 
 Each decode path is modeled as one of:
 
@@ -15,7 +15,7 @@ Each decode path is modeled as one of:
 
 This is a non-binary model of path quality. A path can be live without being equally suitable for every workload.
 
-## 2. Gray Failure Score (`GFS`)
+## 2. `GFS`
 
 `GFS` is the local degradation score. It combines:
 
@@ -26,7 +26,7 @@ This is a non-binary model of path quality. A path can be live without being equ
 
 The point is to capture gray degradation rather than only hard failure.
 
-## 3. Propagation Risk Score (`PRS`)
+## 3. `PRS`
 
 `PRS` estimates how much a bad placement decision can spread beyond the local path.
 
@@ -39,7 +39,7 @@ Inputs:
 
 This is where topology dependence becomes explicit. A degraded sole route is more dangerous than a degraded pool with multiple viable alternates.
 
-## 4. Failure Amplification Estimate (`FAE`)
+## 4. `FAE`
 
 `FAE` connects local degradation to cluster-level impact.
 

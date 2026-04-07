@@ -1,0 +1,46 @@
+<svg width="1160" height="720" viewBox="0 0 1160 720" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1160" height="720" fill="#0B1220"/>
+  <rect x="50" y="38" width="1060" height="644" rx="24" fill="#111A2B" stroke="#243246" stroke-width="2"/>
+
+  <text x="80" y="92" fill="#E5EEF9" font-family="Arial, Helvetica, sans-serif" font-size="30" font-weight="700">Seam Orchestrator</text>
+  <text x="80" y="124" fill="#90A4C2" font-family="Arial, Helvetica, sans-serif" font-size="18">A policy layer above transport for KV movement in disaggregated inference</text>
+
+  <rect x="86" y="170" width="988" height="110" rx="18" fill="#12243B" stroke="#2B4A6B" stroke-width="2"/>
+  <text x="118" y="208" fill="#F5FAFF" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700">Application / Session Layer</text>
+  <text x="118" y="244" fill="#C7D5E6" font-family="Arial, Helvetica, sans-serif" font-size="18">Request classes, SLA expectations, release sensitivity, sync frequency, checkpoint cadence</text>
+
+  <rect x="86" y="316" width="988" height="238" rx="18" fill="#15263C" stroke="#4B6B8F" stroke-width="2"/>
+  <text x="118" y="356" fill="#F5FAFF" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="700">Policy / Control Layer</text>
+  <text x="118" y="385" fill="#8FC5FF" font-family="Arial, Helvetica, sans-serif" font-size="18">Candidate evaluation and admissibility sit here, above the transport backend.</text>
+
+  <rect x="118" y="414" width="268" height="112" rx="16" fill="#0E1C2F" stroke="#335276" stroke-width="2"/>
+  <text x="142" y="448" fill="#F5FAFF" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700">Workload Profiles</text>
+  <text x="142" y="479" fill="#D3DDF0" font-family="Arial, Helvetica, sans-serif" font-size="16">batch / interactive / release</text>
+  <text x="142" y="503" fill="#D3DDF0" font-family="Arial, Helvetica, sans-serif" font-size="16">latency SLA, jitter tolerance</text>
+
+  <rect x="422" y="414" width="316" height="112" rx="16" fill="#0E1C2F" stroke="#335276" stroke-width="2"/>
+  <text x="446" y="448" fill="#F5FAFF" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700">Candidate Evaluation</text>
+  <text x="446" y="479" fill="#D3DDF0" font-family="Arial, Helvetica, sans-serif" font-size="16">PathState, GFS, PRS, FAE</text>
+  <text x="446" y="503" fill="#D3DDF0" font-family="Arial, Helvetica, sans-serif" font-size="16">capacity, topology, hysteresis</text>
+
+  <rect x="774" y="414" width="268" height="112" rx="16" fill="#0E1C2F" stroke="#335276" stroke-width="2"/>
+  <text x="798" y="448" fill="#F5FAFF" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700">Decision Outputs</text>
+  <text x="798" y="479" fill="#D3DDF0" font-family="Arial, Helvetica, sans-serif" font-size="16">admitted / rerouted / rejected</text>
+  <text x="798" y="503" fill="#D3DDF0" font-family="Arial, Helvetica, sans-serif" font-size="16">candidate explanation + logs</text>
+
+  <rect x="86" y="590" width="988" height="60" rx="18" fill="#101A27" stroke="#243246" stroke-width="2"/>
+  <text x="118" y="626" fill="#F5FAFF" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700">Transport Backends</text>
+  <text x="364" y="626" fill="#D3DDF0" font-family="Arial, Helvetica, sans-serif" font-size="18">MockBackend</text>
+  <text x="548" y="626" fill="#D3DDF0" font-family="Arial, Helvetica, sans-serif" font-size="18">NIXLBackend</text>
+  <text x="724" y="626" fill="#D3DDF0" font-family="Arial, Helvetica, sans-serif" font-size="18">UCXBackend</text>
+
+  <path d="M580 280V314" stroke="#87B8FF" stroke-width="3" stroke-linecap="round"/>
+  <path d="M580 554V588" stroke="#87B8FF" stroke-width="3" stroke-linecap="round"/>
+  <path d="M386 470H422" stroke="#4FA3FF" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M738 470H774" stroke="#4FA3FF" stroke-width="2.5" stroke-linecap="round"/>
+
+  <circle cx="580" cy="297" r="5" fill="#87B8FF"/>
+  <circle cx="580" cy="571" r="5" fill="#87B8FF"/>
+
+  <text x="838" y="356" fill="#8FB2D4" font-family="Arial, Helvetica, sans-serif" font-size="16">policy over transport</text>
+</svg>

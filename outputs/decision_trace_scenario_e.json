@@ -1,0 +1,130 @@
+{
+  "workload": "interactive",
+  "outcome": "admitted",
+  "reason": "healthy admissible pool selected",
+  "chosen_candidate": {
+    "pool_id": "pool-1-healthy",
+    "path_state": "healthy",
+    "gfs": 0.0329,
+    "prs": 0.0,
+    "fae": 0.0,
+    "admissible": true,
+    "primary_reason": "healthy path",
+    "capacity_snapshot": {
+      "active_sessions": 0,
+      "max_capacity": 8,
+      "soft_limit": 6,
+      "utilization": 0.0,
+      "remaining": 8,
+      "soft_saturated": false,
+      "hard_saturated": false
+    },
+    "topology": {
+      "pool_id": "pool-1-healthy",
+      "alternate_pool_ids": [
+        "pool-0-degraded"
+      ],
+      "available_alternate_pool_ids": [
+        "pool-0-degraded"
+      ]
+    },
+    "health_snapshot": {
+      "p99_latency_ms": 2.389569378249628,
+      "jitter_ms": 0.32220365618843316,
+      "mean_drop_rate": 0.0,
+      "sample_count": 10
+    },
+    "chosen": true,
+    "skipped_reason": null,
+    "selection_policy": "balanced",
+    "selection_vector": [
+      0.0,
+      0.0,
+      0.0,
+      0.0329,
+      -8.0
+    ]
+  },
+  "candidate_explanations": [
+    {
+      "pool_id": "pool-0-degraded",
+      "path_state": "degraded_usable",
+      "gfs": 0.3012,
+      "prs": 0.0175,
+      "fae": 0.0,
+      "admissible": false,
+      "primary_reason": "jitter 5.5ms exceeds budget 3.5ms",
+      "capacity_snapshot": {
+        "active_sessions": 0,
+        "max_capacity": 8,
+        "soft_limit": 6,
+        "utilization": 0.0,
+        "remaining": 8,
+        "soft_saturated": false,
+        "hard_saturated": false
+      },
+      "topology": {
+        "pool_id": "pool-0-degraded",
+        "alternate_pool_ids": [
+          "pool-1-healthy"
+        ],
+        "available_alternate_pool_ids": [
+          "pool-1-healthy"
+        ]
+      },
+      "health_snapshot": {
+        "p99_latency_ms": 17.59085037334743,
+        "jitter_ms": 5.509789244707794,
+        "mean_drop_rate": 0.0,
+        "sample_count": 10
+      },
+      "chosen": false,
+      "skipped_reason": "jitter 5.5ms exceeds budget 3.5ms",
+      "selection_policy": null,
+      "selection_vector": []
+    },
+    {
+      "pool_id": "pool-1-healthy",
+      "path_state": "healthy",
+      "gfs": 0.0329,
+      "prs": 0.0,
+      "fae": 0.0,
+      "admissible": true,
+      "primary_reason": "healthy path",
+      "capacity_snapshot": {
+        "active_sessions": 0,
+        "max_capacity": 8,
+        "soft_limit": 6,
+        "utilization": 0.0,
+        "remaining": 8,
+        "soft_saturated": false,
+        "hard_saturated": false
+      },
+      "topology": {
+        "pool_id": "pool-1-healthy",
+        "alternate_pool_ids": [
+          "pool-0-degraded"
+        ],
+        "available_alternate_pool_ids": [
+          "pool-0-degraded"
+        ]
+      },
+      "health_snapshot": {
+        "p99_latency_ms": 2.389569378249628,
+        "jitter_ms": 0.32220365618843316,
+        "mean_drop_rate": 0.0,
+        "sample_count": 10
+      },
+      "chosen": true,
+      "skipped_reason": null,
+      "selection_policy": "balanced",
+      "selection_vector": [
+        0.0,
+        0.0,
+        0.0,
+        0.0329,
+        -8.0
+      ]
+    }
+  ]
+}

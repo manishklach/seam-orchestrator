@@ -14,6 +14,12 @@ seam-orchestrator
 transport backend
 ```
 
+## Definitions
+
+- pool: decode resource group
+- path: transfer path to that pool
+- candidate: pool + path + current state snapshot
+
 ## Application or Session Layer
 
 This layer owns request context and workload intent:

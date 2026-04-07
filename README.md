@@ -1,14 +1,16 @@
-# seam-orchestrator
+# Seam Orchestrator
 
-Transport-agnostic KV orchestration for disaggregated inference.
+Transport-agnostic KV orchestration and workload-aware routing for disaggregated inference.
 
-Disaggregated inference needs a glue layer between prefill and decode domains. `seam-orchestrator` explores that glue as a transport-agnostic orchestration layer for path selection, session routing, and workload-aware admissibility above the transport backend.
+Disaggregated inference needs a glue layer between heterogeneous prefill and decode domains. The interesting systems question is no longer only "can bytes move?" It is "is this path admissible for this workload right now?"
+
+Seam Orchestrator explores that control layer. It sits above transport backends such as mock transports, NIXL, or UCX, evaluates candidate paths using workload-aware policy, and makes explainable routing decisions that treat admissibility as a first-class concept.
 
 ## What This Repo Is
 
-`seam-orchestrator` is a prototype policy layer for KV movement in disaggregated inference systems. It sits above transport backends such as mock transports, NIXL, or UCX, and makes workload-aware routing and admissibility decisions across heterogeneous prefill and decode pools.
+`seam-orchestrator` is a transport-agnostic orchestration layer for KV movement in disaggregated inference. It is designed as a policy/control layer above transport backends, not as a replacement for them.
 
-The thesis is simple:
+The thesis is:
 
 - The interesting question is not only "can bytes move?"
 - The interesting question is "should this path be used for this workload right now?"
@@ -34,7 +36,7 @@ Disaggregated inference creates a new systems boundary: the seam between prefill
 - Is the healthier pool too close to capacity to spend on tolerant work?
 - Does alternate-path scarcity change the risk of using a given pool?
 
-AWS publicly announced support for NIXL with EFA for LLM inference workloads, and AWS/Cerebras publicly described a disaggregated deployment where Trainium performs prefill, Cerebras performs decode, and KV cache moves over EFA between them. That is the broader context for this prototype: not replacing transport, but adding a policy layer above it.
+AWS publicly announced support for NIXL with EFA for LLM inference workloads, and AWS/Cerebras publicly described a disaggregated deployment where Trainium performs prefill, Cerebras performs decode, and KV cache moves over EFA between them. That is the broader context for this repo: not replacing transport, but adding a policy layer above it.
 
 References:
 
@@ -43,24 +45,17 @@ References:
 
 ## Architecture
 
-```text
-application/session layer
-        |
-        v
-seam-orchestrator
-  - workload-aware admissibility
-  - path selection and routing
-  - candidate explanation bundles
-  - staged restore and hysteresis
-        |
-        v
-transport backends
-  - MockBackend
-  - NIXLBackend
-  - UCXBackend
-```
+![Seam Orchestrator Architecture](docs/architecture.svg)
 
-The application or session layer decides that a request needs decode capacity. The orchestrator decides which path is admissible, which candidate should be chosen, and why. The backend below it only moves KV state.
+The application/session layer decides that a request needs decode capacity. Seam Orchestrator evaluates candidate paths, applies workload-aware admissibility and routing policy, and emits candidate explanations. The transport backend below it only moves KV state.
+
+### Terminology
+
+| Term | Meaning |
+| --- | --- |
+| pool | decode resource group |
+| path | transfer path to that pool |
+| candidate | pool + path + current state snapshot |
 
 ## Core Concepts
 
@@ -73,6 +68,15 @@ The application or session layer decides that a request needs decode capacity. T
 | `WorkloadProfile` | Workload descriptor carrying latency SLA, jitter tolerance, sync frequency, checkpoint size, and release sensitivity. |
 | Candidate explanation bundle | Structured per-candidate explanation with `PathState`, `GFS`, `PRS`, `FAE`, admissibility, capacity, topology dependence, and chosen/skipped reason. |
 | Hysteresis and staged restore | Fast escalation, slower recovery, and staged restore to avoid flapping. |
+
+## Why Not Just Use NIXL Directly?
+
+NIXL and similar transport layers solve byte movement. Seam Orchestrator solves workload-aware admissibility and routing above transport.
+
+- transport backend: can the KV payload move?
+- orchestrator: should this candidate path carry this workload now?
+
+These layers are complementary, not mutually exclusive.
 
 ## Scenario E: Category-Defining Demo
 
@@ -91,6 +95,8 @@ Scenario E is the core proof of the thesis.
 | `pool-0-degraded` | Reachable, elevated latency and jitter, KV transfer still succeeds | `DEGRADED_USABLE` | Admissible | Not admissible | Not admissible |
 | `pool-1-healthy` | Clean backup path with low latency and low jitter | `HEALTHY` | Admissible | Admissible | Admissible |
 
+Takeaway: a path can remain live and still become workload-selective rather than universally usable.
+
 ### Why Scenario E Matters
 
 This is the point of the project:
@@ -108,6 +114,15 @@ Scenario F extends the thesis from admissibility into policy tradeoffs.
 - The orchestrator preserves the healthier path for stricter workloads and uses the degraded path for capacity-tolerant work when headroom matters more than raw health.
 
 That makes the artifact stronger as a control-layer prototype: the healthiest path is not always the right choice when headroom is scarce.
+
+### Scenario F Summary
+
+| Candidate path | Health posture | Capacity posture | Policy outcome |
+| --- | --- | --- | --- |
+| `pool-healthy-tight` | `HEALTHY` | Near soft limit | Preserved for stricter workloads |
+| `pool-degraded-roomy` | `DEGRADED_USABLE` | More headroom | Used for tolerant work when admissible |
+
+Takeaway: the healthiest path is not always the selected path when policy must protect headroom for stricter work.
 
 ## Explainability and Logs
 
@@ -140,10 +155,38 @@ Structured JSONL event logs are written under `outputs/` and include:
 - rejections
 - reroutes
 
+## Concrete Output
+
+Representative simulator output:
+
+```text
+Workload    | Chosen path     | Outcome               | Routing rationale
+------------+-----------------+-----------------------+--------------------------------------------------------------
+batch       | pool-0-degraded | rerouted_to_alternate | headroom_first selected pool-0-degraded over healthier pool-1-healthy
+interactive | pool-1-healthy  | admitted              | healthy admissible pool selected
+release     | pool-1-healthy  | admitted              | healthy admissible pool selected
+```
+
+Phase 2 evaluation highlights from `python evaluate.py`:
+
+- strict workloads preserved on healthy paths: `97.9%`
+- tolerant workloads admitted to degraded-but-usable paths: `91.7%`
+- capacity-pressure batch reroutes observed: `24 / 24` evaluation trials
+
+Phase 2 committed artifacts:
+
+- [outputs/scenario_summary.md](outputs/scenario_summary.md)
+- [outputs/scenario_e_table.md](outputs/scenario_e_table.md)
+- [outputs/scenario_f_table.md](outputs/scenario_f_table.md)
+- [outputs/decision_trace_scenario_e.json](outputs/decision_trace_scenario_e.json)
+- [outputs/decision_trace_scenario_f.json](outputs/decision_trace_scenario_f.json)
+- [outputs/evaluation_summary.md](outputs/evaluation_summary.md)
+
 ## Repository Layout
 
 ```text
 README.md
+evaluate.py
 orchestrator.py
 pipeline.py
 transport.py
@@ -152,6 +195,7 @@ docs/
   architecture.md
   decision-model.md
   scenarios.md
+  extensions.md
 outputs/
 ```
 
@@ -169,6 +213,12 @@ python simulate.py --scenario E
 python simulate.py --scenario F
 ```
 
+Generate Phase 2 artifacts and a lightweight evaluation pass:
+
+```bash
+python evaluate.py
+```
+
 Run all scenarios:
 
 ```bash
@@ -182,8 +232,16 @@ python simulate.py --scenario all
 - NIXL and UCX shims are included as lightweight adapters to show where real transfer backends plug in.
 - The prototype stays compact on purpose: the goal is to make the policy thesis legible.
 
+## What's Next
+
+- broader evaluation sweeps and replay tooling
+- richer explainability views over candidate decisions
+- checkpoint/storage admissibility as a second embodiment
+- broader policy surfaces beyond KV routing while preserving the same architecture
+
 ## Further Reading
 
 - [docs/architecture.md](docs/architecture.md)
 - [docs/decision-model.md](docs/decision-model.md)
 - [docs/scenarios.md](docs/scenarios.md)
+- [docs/extensions.md](docs/extensions.md)

@@ -1,6 +1,6 @@
 # Scenarios
 
-The simulator includes six focused scenarios that illustrate a policy layer above transport. The scenarios are meant to make workload-relative admissibility and routing tradeoffs legible, not to benchmark the transport adapters.
+The simulator includes six focused scenarios that illustrate a policy layer above transport. The scenarios are meant to make workload-relative admissibility and routing tradeoffs legible, not to benchmark the transport backends.
 
 ## Scenario A: Clean Baseline
 
@@ -48,6 +48,12 @@ Expected behavior:
 | Degraded path | Transfer succeeds | `DEGRADED_USABLE` | Admissible | Not admissible | Not admissible |
 | Healthy path | Transfer succeeds | `HEALTHY` | Admissible | Admissible | Admissible |
 
+Takeaway:
+
+- the path is up
+- transport succeeds
+- admissibility still splits by workload sensitivity
+
 ## Scenario F: Capacity Pressure Under Gray Failure
 
 Purpose:
@@ -66,6 +72,12 @@ Expected behavior:
 | --- | --- | --- | --- |
 | Healthier path | `HEALTHY` | Near soft limit | Preserved for stricter work |
 | Degraded path | `DEGRADED_USABLE` | More headroom | Used for tolerant work when admissible |
+
+Takeaway:
+
+- policy is not only about health
+- headroom can dominate among admissible candidates
+- degraded-but-usable paths can absorb tolerant work
 
 ## Reading the Output
 
