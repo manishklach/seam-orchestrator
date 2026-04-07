@@ -2,9 +2,9 @@
 
 A policy layer above transport for KV movement, workload-aware admissibility, and routing in disaggregated inference.
 
-Disaggregated inference needs a glue layer between heterogeneous prefill and decode domains. The interesting systems question is no longer only "can bytes move?" It is "is this path admissible for this workload right now?"
+Disaggregated inference needs a glue layer between heterogeneous prefill and decode domains. Transport is necessary, but it is not the whole control problem. The interesting systems question is no longer only "can bytes move?" It is "is this path admissible for this workload right now?"
 
-Seam Orchestrator explores that control layer. It sits above swappable transport backends such as mock transports, NIXL, or UCX, evaluates candidate paths using workload-aware policy, and makes explainable routing decisions that treat admissibility as a first-class concept.
+Seam Orchestrator explores that layer above transport. It sits above swappable transport backends such as mock transport, NIXL, or UCX, evaluates candidates using workload-aware policy, and emits auditable decision records for routing choices that would otherwise remain implicit.
 
 > KV cache transfer is not only a transport problem. In disaggregated inference, it becomes a policy problem at the seam between heterogeneous prefill and decode domains.
 
@@ -27,7 +27,7 @@ That control point becomes strategically important in disaggregated systems, whe
 - Not a generic monitoring dashboard.
 - Not a transport microbenchmark project.
 
-The transport backend remains intentionally narrow. The main artifact here is the policy layer above transport, even though the repo also demonstrates a credible replacement prototype path for the glue layer.
+The transport backend remains intentionally narrow. Transport itself is still complex and important. The main artifact here is the policy layer above transport, even though the repo also demonstrates a credible replacement-capable prototype path for the glue layer.
 
 ## Why This Matters
 
@@ -67,7 +67,7 @@ Yes, in prototype form.
 
 This repo demonstrates that the KV-transfer glue layer is not irreducibly tied to one backend implementation. A mock backend, a NIXL-backed path, a UCX-backed path, and future direct backends can all sit behind the same orchestration surface.
 
-That does not mean this repo is claiming production parity with mature transport stacks. It means a replacement-capable prototype path exists, the interface layer is real, and much of the strategically interesting software value sits above transport in admissibility, routing, explainability, hysteresis, and capacity-aware policy.
+That does not mean this repo is claiming production parity with mature transport stacks. Transport remains important and difficult. The point is narrower and more defensible: a replacement-capable prototype path exists, the backend abstraction is real, and much of the strategically interesting software value sits above transport in admissibility, routing, hysteresis, tail-risk handling, and decision records.
 
 ## Layer Responsibilities
 
@@ -92,6 +92,27 @@ That does not mean this repo is claiming production parity with mature transport
 | `WorkloadProfile` | Workload descriptor carrying latency SLA, jitter tolerance, sync frequency, checkpoint size, and release sensitivity. |
 | Decision record | Structured explanation object with `PathState`, `GFS`, `PRS`, `FAE`, admissibility, capacity, topology dependence, and chosen/skipped reason. |
 | Hysteresis and staged restore | Fast escalation, slower recovery, and staged restore to avoid flapping. |
+
+## Why Decision Records Matter
+
+Transport can tell you what happened at transfer level. Seam Orchestrator adds a decision layer that can tell you why a routing choice was made.
+
+- Why a candidate stayed admissible for batch but not for release-sensitive work.
+- Why a lower-latency but jitterier path was rejected for stricter traffic.
+- Why a healthier pool was preserved for tail-sensitive workloads instead of spent on tolerant work.
+- Why a reroute happened instead of a reject.
+
+That makes the artifact more auditable than a pure transfer metric stream. Under gray degradation, the decision record is the control-plane audit trail: not just what happened on the wire, but why the policy chose to admit, reject, reroute, or preserve headroom.
+
+## Tail-Latency Protection
+
+One of the main values of the orchestrator is keeping strict or release-sensitive requests off still-alive but jittery paths that can poison `p99` behavior.
+
+- `p99` latency is checked directly against workload SLA.
+- Jitter-sensitive workloads apply a tighter jitter budget.
+- Healthy headroom can be preserved for stricter workloads, even when a degraded path remains admissible for tolerant work.
+
+The goal is not to claim a universal `p99` guarantee. The goal is to make tail-risk-aware routing explicit and explainable, especially in the still-alive but unstable conditions that Scenario E is meant to surface.
 
 ## Why Not Just Use NIXL Directly?
 
@@ -130,6 +151,7 @@ This is the point of the project:
 - Health is not binary.
 - Admissibility is workload-relative.
 - A still-alive path can be acceptable for low-criticality traffic and unacceptable for strict-SLA traffic.
+- That split is also a form of tail-latency protection: stricter workloads are kept off the jitterier path before long-tail behavior becomes the dominant failure mode.
 
 ## Scenario F: Capacity Pressure Under Gray Failure
 
@@ -201,6 +223,22 @@ Lightweight evaluation highlights from `python evaluate.py`:
 - tolerant workloads admitted to degraded-but-usable paths: `91.7%`
 - capacity-pressure batch reroutes observed: `24 / 24` evaluation trials
 
+Replay highlights from `python replay.py` on `data/sample_trace.csv`:
+
+- `seam_orchestrator` kept `66.7%` of strict requests on healthy paths, matching `binary_health_only`
+- `seam_orchestrator` admitted `100.0%` of tolerant batch requests onto degraded-but-usable paths when appropriate
+- `lowest_latency` dropped to `33.3%` strict healthy placement by chasing lower-latency but jitterier paths
+
+Representative replay comparison:
+
+```text
+Request  | Workload     | Lowest latency | Binary health | Capacity only | Seam Orchestrator
+---------+--------------+----------------+---------------+---------------+-------------------
+req-002  | interactive  | pool-degraded  | pool-healthy  | pool-degraded | pool-healthy
+req-005  | interactive  | pool-degraded  | pool-healthy-a| pool-degraded | pool-healthy-a
+req-004  | batch        | pool-healthy-a | pool-healthy-a| pool-degraded | pool-degraded
+```
+
 Committed result artifacts:
 
 - [outputs/scenario_summary.md](outputs/scenario_summary.md)
@@ -212,6 +250,8 @@ Committed result artifacts:
 - [outputs/decision_trace_scenario_e.json](outputs/decision_trace_scenario_e.json)
 - [outputs/decision_trace_scenario_f.json](outputs/decision_trace_scenario_f.json)
 - [outputs/evaluation_summary.md](outputs/evaluation_summary.md)
+- [outputs/replay_summary.md](outputs/replay_summary.md)
+- [outputs/replay_comparison_table.md](outputs/replay_comparison_table.md)
 
 ## Experimental Results
 
@@ -238,6 +278,19 @@ Simple baselines miss critical policy information. Lowest-latency and binary-hea
 
 ![Experiment 5 baseline comparison](outputs/experiment_baseline_comparison.svg)
 
+### Replay Comparison
+
+Replay makes the routing surface more auditable by comparing the same request trace across naive policies and Seam Orchestrator.
+
+| Policy | Strict healthy % | Tolerant degraded % | Strict protected | Headroom preserved |
+| --- | --- | --- | --- | --- |
+| `lowest_latency` | `33.3%` | `75.0%` | `0` | `1` |
+| `binary_health_only` | `66.7%` | `50.0%` | `2` | `0` |
+| `capacity_only` | `33.3%` | `100.0%` | `0` | `2` |
+| `seam_orchestrator` | `66.7%` | `100.0%` | `2` | `2` |
+
+Replay takeaway: naive routing can protect one axis at the expense of another. Seam Orchestrator keeps the decision record, the tail-risk guardrails, and the headroom tradeoff in the same auditable control loop.
+
 Committed experiment artifacts:
 
 - [outputs/experiment_summary.md](outputs/experiment_summary.md)
@@ -246,6 +299,7 @@ Committed experiment artifacts:
 - [outputs/experiment_hysteresis_stability.md](outputs/experiment_hysteresis_stability.md)
 - [outputs/experiment_alternate_scarcity.md](outputs/experiment_alternate_scarcity.md)
 - [outputs/experiment_baseline_comparison.md](outputs/experiment_baseline_comparison.md)
+- [outputs/replay_summary.md](outputs/replay_summary.md)
 
 ## What the experiments show
 
@@ -255,6 +309,19 @@ Committed experiment artifacts:
 - Hysteresis prevents flapping. Staged restore reduces oscillation under noisy conditions.
 - Alternate-path scarcity changes the decision materially by raising `PRS` and `FAE`.
 - Naive routing loses important information. Lowest-latency, binary-health-only, and capacity-only each discard different parts of the control problem.
+- Replay makes the value proposition auditable. The same request trace can be re-evaluated side by side, with decision records showing why a stricter request stayed on a healthier path or why tolerant work absorbed degraded capacity.
+
+## Scoring Model / Spec
+
+The scoring model is intentionally explicit rather than opaque.
+
+- `GFS` summarizes local gray degradation from latency, jitter, drop behavior, and a small interaction term.
+- `PRS` estimates how much a bad placement choice could propagate risk based on topology, alternate-path scarcity, state severity, and workload sensitivity.
+- `FAE` estimates how local degradation can amplify into broader useful-work loss or blast radius.
+- Workload-conditioned admissibility is evaluated separately from scoring.
+- Capacity and hysteresis enter as explicit policy stages rather than being hidden inside one mega-score.
+
+Current defaults are configurable and meant for clarity and experimentation, not presented as universal optimums. The detailed formulas, weights, thresholds, and persistence windows are documented in [docs/scoring-spec.md](docs/scoring-spec.md).
 
 ## Repository Layout
 
@@ -262,13 +329,17 @@ Committed experiment artifacts:
 README.md
 evaluate.py
 experiments.py
+replay.py
 orchestrator.py
 pipeline.py
 transport.py
 simulate.py
+data/
+  sample_trace.csv
 docs/
   architecture.md
   decision-model.md
+  scoring-spec.md
   replacement-path.md
   scenarios.md
   extensions.md
@@ -301,6 +372,12 @@ Generate controlled experiment sweeps and evidence artifacts:
 python experiments.py
 ```
 
+Replay a sample request trace against naive policies and Seam Orchestrator:
+
+```bash
+python replay.py
+```
+
 Run all scenarios:
 
 ```bash
@@ -314,10 +391,10 @@ python simulate.py --scenario all
 - NIXL and UCX shims are included as lightweight adapters to show where real transfer backends plug in.
 - The prototype stays compact on purpose: the goal is to make the policy thesis legible.
 - The experiments are synthetic by design: they are evidence for policy behavior, not claims about transport throughput.
+- The replay tool is synthetic by design: it is meant to audit routing decisions, not to recreate production traffic in full.
 
 ## What's Next
 
-- broader evaluation sweeps and replay tooling
 - richer explainability views over candidate decisions
 - checkpoint/storage admissibility as a second embodiment
 - broader policy surfaces beyond KV routing while preserving the same architecture
@@ -326,6 +403,7 @@ python simulate.py --scenario all
 
 - [docs/architecture.md](docs/architecture.md)
 - [docs/decision-model.md](docs/decision-model.md)
+- [docs/scoring-spec.md](docs/scoring-spec.md)
 - [docs/replacement-path.md](docs/replacement-path.md)
 - [docs/scenarios.md](docs/scenarios.md)
 - [docs/extensions.md](docs/extensions.md)

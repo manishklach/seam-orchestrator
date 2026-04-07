@@ -1,0 +1,727 @@
+{
+  "summary": {
+    "policy_metrics": {
+      "lowest_latency": {
+        "requests": 10,
+        "strict_choice_count": 5,
+        "strict_healthy_pct": 33.3,
+        "tolerant_degraded_pct": 75.0,
+        "headroom_preserved_count": 1,
+        "strict_protected_count": 0,
+        "no_pool_count": 1
+      },
+      "binary_health_only": {
+        "requests": 10,
+        "strict_choice_count": 5,
+        "strict_healthy_pct": 66.7,
+        "tolerant_degraded_pct": 50.0,
+        "headroom_preserved_count": 0,
+        "strict_protected_count": 2,
+        "no_pool_count": 1
+      },
+      "capacity_only": {
+        "requests": 10,
+        "strict_choice_count": 5,
+        "strict_healthy_pct": 33.3,
+        "tolerant_degraded_pct": 100.0,
+        "headroom_preserved_count": 2,
+        "strict_protected_count": 0,
+        "no_pool_count": 1
+      },
+      "seam_orchestrator": {
+        "requests": 10,
+        "strict_choice_count": 5,
+        "strict_healthy_pct": 66.7,
+        "tolerant_degraded_pct": 100.0,
+        "headroom_preserved_count": 2,
+        "strict_protected_count": 2,
+        "no_pool_count": 1
+      }
+    },
+    "replay_requests": 10,
+    "strict_workloads_protected_by_seam": 4,
+    "headroom_preserved_by_seam": 3
+  },
+  "results": [
+    {
+      "request_id": "req-001",
+      "timestamp": "2026-04-07T00:00:00Z",
+      "workload_type": "batch",
+      "strict_workload_protected": false,
+      "degraded_path_used": true,
+      "healthy_headroom_preserved": true,
+      "candidates": [
+        {
+          "pool_id": "pool-degraded",
+          "path_state": "degraded_usable",
+          "admissible": true,
+          "reason": "degraded_usable remains admissible for workload criticality 0.20",
+          "latency_ms": 3.6,
+          "jitter_ms": 2.8,
+          "remaining_capacity": 6,
+          "soft_saturated": false
+        },
+        {
+          "pool_id": "pool-healthy",
+          "path_state": "healthy",
+          "admissible": true,
+          "reason": "healthy path",
+          "latency_ms": 4.1,
+          "jitter_ms": 0.4,
+          "remaining_capacity": 2,
+          "soft_saturated": true
+        }
+      ],
+      "rejected_candidates": [],
+      "policies": {
+        "lowest_latency": {
+          "chosen_pool_id": "pool-degraded",
+          "path_state": "degraded_usable",
+          "reason": "degraded_usable remains admissible for workload criticality 0.20",
+          "gfs": 0.093,
+          "prs": 0.01,
+          "fae": 0.2016
+        },
+        "binary_health_only": {
+          "chosen_pool_id": "pool-healthy",
+          "path_state": "healthy",
+          "reason": "healthy path",
+          "gfs": 0.0536,
+          "prs": 0.0,
+          "fae": 1.0494
+        },
+        "capacity_only": {
+          "chosen_pool_id": "pool-degraded",
+          "path_state": "degraded_usable",
+          "reason": "degraded_usable remains admissible for workload criticality 0.20",
+          "gfs": 0.093,
+          "prs": 0.01,
+          "fae": 0.2016
+        },
+        "seam_orchestrator": {
+          "chosen_pool_id": "pool-degraded",
+          "path_state": "degraded_usable",
+          "reason": "degraded_usable remains admissible for workload criticality 0.20",
+          "gfs": 0.093,
+          "prs": 0.01,
+          "fae": 0.2016
+        }
+      }
+    },
+    {
+      "request_id": "req-002",
+      "timestamp": "2026-04-07T00:00:05Z",
+      "workload_type": "interactive",
+      "strict_workload_protected": true,
+      "degraded_path_used": false,
+      "healthy_headroom_preserved": false,
+      "candidates": [
+        {
+          "pool_id": "pool-degraded",
+          "path_state": "degraded_usable",
+          "admissible": true,
+          "reason": "degraded_usable remains admissible for workload criticality 0.80",
+          "latency_ms": 3.5,
+          "jitter_ms": 2.6,
+          "remaining_capacity": 6,
+          "soft_saturated": false
+        },
+        {
+          "pool_id": "pool-healthy",
+          "path_state": "healthy",
+          "admissible": true,
+          "reason": "healthy path",
+          "latency_ms": 4.0,
+          "jitter_ms": 0.5,
+          "remaining_capacity": 2,
+          "soft_saturated": true
+        }
+      ],
+      "rejected_candidates": [],
+      "policies": {
+        "lowest_latency": {
+          "chosen_pool_id": "pool-degraded",
+          "path_state": "degraded_usable",
+          "reason": "degraded_usable remains admissible for workload criticality 0.80",
+          "gfs": 0.0881,
+          "prs": 0.04,
+          "fae": 0.8513
+        },
+        "binary_health_only": {
+          "chosen_pool_id": "pool-healthy",
+          "path_state": "healthy",
+          "reason": "healthy path",
+          "gfs": 0.0544,
+          "prs": 0.0,
+          "fae": 4.136
+        },
+        "capacity_only": {
+          "chosen_pool_id": "pool-degraded",
+          "path_state": "degraded_usable",
+          "reason": "degraded_usable remains admissible for workload criticality 0.80",
+          "gfs": 0.0881,
+          "prs": 0.04,
+          "fae": 0.8513
+        },
+        "seam_orchestrator": {
+          "chosen_pool_id": "pool-healthy",
+          "path_state": "healthy",
+          "reason": "healthy path",
+          "gfs": 0.0544,
+          "prs": 0.0,
+          "fae": 4.136
+        }
+      }
+    },
+    {
+      "request_id": "req-003",
+      "timestamp": "2026-04-07T00:00:10Z",
+      "workload_type": "release",
+      "strict_workload_protected": true,
+      "degraded_path_used": false,
+      "healthy_headroom_preserved": false,
+      "candidates": [
+        {
+          "pool_id": "pool-degraded",
+          "path_state": "degraded_usable",
+          "admissible": false,
+          "reason": "release-critical workload blocked on degraded_usable path",
+          "latency_ms": 3.4,
+          "jitter_ms": 2.9,
+          "remaining_capacity": 6,
+          "soft_saturated": false
+        },
+        {
+          "pool_id": "pool-healthy",
+          "path_state": "healthy",
+          "admissible": true,
+          "reason": "healthy path",
+          "latency_ms": 4.2,
+          "jitter_ms": 0.5,
+          "remaining_capacity": 2,
+          "soft_saturated": true
+        }
+      ],
+      "rejected_candidates": [
+        {
+          "pool_id": "pool-degraded",
+          "reason": "release-critical workload blocked on degraded_usable path",
+          "path_state": "degraded_usable"
+        }
+      ],
+      "policies": {
+        "lowest_latency": {
+          "chosen_pool_id": "pool-healthy",
+          "path_state": "healthy",
+          "reason": "healthy path",
+          "gfs": 0.0566,
+          "prs": 0.0,
+          "fae": 9.4413
+        },
+        "binary_health_only": {
+          "chosen_pool_id": "pool-healthy",
+          "path_state": "healthy",
+          "reason": "healthy path",
+          "gfs": 0.0566,
+          "prs": 0.0,
+          "fae": 9.4413
+        },
+        "capacity_only": {
+          "chosen_pool_id": "pool-healthy",
+          "path_state": "healthy",
+          "reason": "healthy path",
+          "gfs": 0.0566,
+          "prs": 0.0,
+          "fae": 9.4413
+        },
+        "seam_orchestrator": {
+          "chosen_pool_id": "pool-healthy",
+          "path_state": "healthy",
+          "reason": "healthy path",
+          "gfs": 0.0566,
+          "prs": 0.0,
+          "fae": 9.4413
+        }
+      }
+    },
+    {
+      "request_id": "req-004",
+      "timestamp": "2026-04-07T00:00:15Z",
+      "workload_type": "batch",
+      "strict_workload_protected": false,
+      "degraded_path_used": true,
+      "healthy_headroom_preserved": true,
+      "candidates": [
+        {
+          "pool_id": "pool-degraded",
+          "path_state": "degraded_usable",
+          "admissible": true,
+          "reason": "degraded_usable remains admissible for workload criticality 0.20",
+          "latency_ms": 3.7,
+          "jitter_ms": 2.4,
+          "remaining_capacity": 7,
+          "soft_saturated": false
+        },
+        {
+          "pool_id": "pool-healthy-a",
+          "path_state": "healthy",
+          "admissible": true,
+          "reason": "healthy path",
+          "latency_ms": 3.2,
+          "jitter_ms": 0.4,
+          "remaining_capacity": 2,
+          "soft_saturated": true
+        },
+        {
+          "pool_id": "pool-healthy-b",
+          "path_state": "healthy",
+          "admissible": true,
+          "reason": "healthy path",
+          "latency_ms": 4.4,
+          "jitter_ms": 0.6,
+          "remaining_capacity": 5,
+          "soft_saturated": false
+        }
+      ],
+      "rejected_candidates": [],
+      "policies": {
+        "lowest_latency": {
+          "chosen_pool_id": "pool-healthy-a",
+          "path_state": "healthy",
+          "reason": "healthy path",
+          "gfs": 0.0435,
+          "prs": 0.0,
+          "fae": 0.9375
+        },
+        "binary_health_only": {
+          "chosen_pool_id": "pool-healthy-a",
+          "path_state": "healthy",
+          "reason": "healthy path",
+          "gfs": 0.0435,
+          "prs": 0.0,
+          "fae": 0.9375
+        },
+        "capacity_only": {
+          "chosen_pool_id": "pool-degraded",
+          "path_state": "degraded_usable",
+          "reason": "degraded_usable remains admissible for workload criticality 0.20",
+          "gfs": 0.0866,
+          "prs": 0.005,
+          "fae": 0.0902
+        },
+        "seam_orchestrator": {
+          "chosen_pool_id": "pool-degraded",
+          "path_state": "degraded_usable",
+          "reason": "degraded_usable remains admissible for workload criticality 0.20",
+          "gfs": 0.0866,
+          "prs": 0.005,
+          "fae": 0.0902
+        }
+      }
+    },
+    {
+      "request_id": "req-005",
+      "timestamp": "2026-04-07T00:00:20Z",
+      "workload_type": "interactive",
+      "strict_workload_protected": true,
+      "degraded_path_used": false,
+      "healthy_headroom_preserved": false,
+      "candidates": [
+        {
+          "pool_id": "pool-degraded",
+          "path_state": "degraded_usable",
+          "admissible": true,
+          "reason": "degraded_usable remains admissible for workload criticality 0.80",
+          "latency_ms": 3.3,
+          "jitter_ms": 2.5,
+          "remaining_capacity": 7,
+          "soft_saturated": false
+        },
+        {
+          "pool_id": "pool-healthy-a",
+          "path_state": "healthy",
+          "admissible": true,
+          "reason": "healthy path",
+          "latency_ms": 3.9,
+          "jitter_ms": 0.4,
+          "remaining_capacity": 2,
+          "soft_saturated": true
+        },
+        {
+          "pool_id": "pool-healthy-b",
+          "path_state": "healthy",
+          "admissible": true,
+          "reason": "healthy path",
+          "latency_ms": 4.4,
+          "jitter_ms": 0.6,
+          "remaining_capacity": 5,
+          "soft_saturated": false
+        }
+      ],
+      "rejected_candidates": [],
+      "policies": {
+        "lowest_latency": {
+          "chosen_pool_id": "pool-degraded",
+          "path_state": "degraded_usable",
+          "reason": "degraded_usable remains admissible for workload criticality 0.80",
+          "gfs": 0.084,
+          "prs": 0.02,
+          "fae": 0.372
+        },
+        "binary_health_only": {
+          "chosen_pool_id": "pool-healthy-a",
+          "path_state": "healthy",
+          "reason": "healthy path",
+          "gfs": 0.0514,
+          "prs": 0.0,
+          "fae": 3.6479
+        },
+        "capacity_only": {
+          "chosen_pool_id": "pool-degraded",
+          "path_state": "degraded_usable",
+          "reason": "degraded_usable remains admissible for workload criticality 0.80",
+          "gfs": 0.084,
+          "prs": 0.02,
+          "fae": 0.372
+        },
+        "seam_orchestrator": {
+          "chosen_pool_id": "pool-healthy-a",
+          "path_state": "healthy",
+          "reason": "healthy path",
+          "gfs": 0.0514,
+          "prs": 0.0,
+          "fae": 3.6479
+        }
+      }
+    },
+    {
+      "request_id": "req-006",
+      "timestamp": "2026-04-07T00:00:25Z",
+      "workload_type": "batch",
+      "strict_workload_protected": false,
+      "degraded_path_used": true,
+      "healthy_headroom_preserved": false,
+      "candidates": [
+        {
+          "pool_id": "pool-primary-degraded",
+          "path_state": "degraded_usable",
+          "admissible": true,
+          "reason": "degraded_usable remains admissible for workload criticality 0.20",
+          "latency_ms": 3.8,
+          "jitter_ms": 2.3,
+          "remaining_capacity": 4,
+          "soft_saturated": false
+        }
+      ],
+      "rejected_candidates": [],
+      "policies": {
+        "lowest_latency": {
+          "chosen_pool_id": "pool-primary-degraded",
+          "path_state": "degraded_usable",
+          "reason": "degraded_usable remains admissible for workload criticality 0.20",
+          "gfs": 0.0859,
+          "prs": 0.04,
+          "fae": 0.7276
+        },
+        "binary_health_only": {
+          "chosen_pool_id": "pool-primary-degraded",
+          "path_state": "degraded_usable",
+          "reason": "degraded_usable remains admissible for workload criticality 0.20",
+          "gfs": 0.0859,
+          "prs": 0.04,
+          "fae": 0.7276
+        },
+        "capacity_only": {
+          "chosen_pool_id": "pool-primary-degraded",
+          "path_state": "degraded_usable",
+          "reason": "degraded_usable remains admissible for workload criticality 0.20",
+          "gfs": 0.0859,
+          "prs": 0.04,
+          "fae": 0.7276
+        },
+        "seam_orchestrator": {
+          "chosen_pool_id": "pool-primary-degraded",
+          "path_state": "degraded_usable",
+          "reason": "degraded_usable remains admissible for workload criticality 0.20",
+          "gfs": 0.0859,
+          "prs": 0.04,
+          "fae": 0.7276
+        }
+      }
+    },
+    {
+      "request_id": "req-007",
+      "timestamp": "2026-04-07T00:00:30Z",
+      "workload_type": "release",
+      "strict_workload_protected": false,
+      "degraded_path_used": false,
+      "healthy_headroom_preserved": false,
+      "candidates": [
+        {
+          "pool_id": "pool-primary-degraded",
+          "path_state": "degraded_usable",
+          "admissible": false,
+          "reason": "release-critical workload blocked on degraded_usable path",
+          "latency_ms": 3.9,
+          "jitter_ms": 2.4,
+          "remaining_capacity": 4,
+          "soft_saturated": false
+        }
+      ],
+      "rejected_candidates": [
+        {
+          "pool_id": "pool-primary-degraded",
+          "reason": "release-critical workload blocked on degraded_usable path",
+          "path_state": "degraded_usable"
+        }
+      ],
+      "policies": {
+        "lowest_latency": {
+          "chosen_pool_id": null,
+          "path_state": null,
+          "reason": "no admissible pool",
+          "gfs": null,
+          "prs": null,
+          "fae": null
+        },
+        "binary_health_only": {
+          "chosen_pool_id": null,
+          "path_state": null,
+          "reason": "no admissible pool",
+          "gfs": null,
+          "prs": null,
+          "fae": null
+        },
+        "capacity_only": {
+          "chosen_pool_id": null,
+          "path_state": null,
+          "reason": "no admissible pool",
+          "gfs": null,
+          "prs": null,
+          "fae": null
+        },
+        "seam_orchestrator": {
+          "chosen_pool_id": null,
+          "path_state": null,
+          "reason": "no admissible pool",
+          "gfs": null,
+          "prs": null,
+          "fae": null
+        }
+      }
+    },
+    {
+      "request_id": "req-008",
+      "timestamp": "2026-04-07T00:00:35Z",
+      "workload_type": "interactive",
+      "strict_workload_protected": false,
+      "degraded_path_used": true,
+      "healthy_headroom_preserved": false,
+      "candidates": [
+        {
+          "pool_id": "pool-a",
+          "path_state": "healthy",
+          "admissible": false,
+          "reason": "capacity exhausted (8/8)",
+          "latency_ms": 4.1,
+          "jitter_ms": 0.5,
+          "remaining_capacity": 0,
+          "soft_saturated": true
+        },
+        {
+          "pool_id": "pool-b",
+          "path_state": "degraded_usable",
+          "admissible": true,
+          "reason": "degraded_usable remains admissible for workload criticality 0.80",
+          "latency_ms": 3.6,
+          "jitter_ms": 2.2,
+          "remaining_capacity": 5,
+          "soft_saturated": false
+        }
+      ],
+      "rejected_candidates": [
+        {
+          "pool_id": "pool-a",
+          "reason": "capacity exhausted (8/8)",
+          "path_state": "healthy"
+        }
+      ],
+      "policies": {
+        "lowest_latency": {
+          "chosen_pool_id": "pool-b",
+          "path_state": "degraded_usable",
+          "reason": "degraded_usable remains admissible for workload criticality 0.80",
+          "gfs": 0.0818,
+          "prs": 0.16,
+          "fae": 2.2922
+        },
+        "binary_health_only": {
+          "chosen_pool_id": "pool-b",
+          "path_state": "degraded_usable",
+          "reason": "degraded_usable remains admissible for workload criticality 0.80",
+          "gfs": 0.0818,
+          "prs": 0.16,
+          "fae": 2.2922
+        },
+        "capacity_only": {
+          "chosen_pool_id": "pool-b",
+          "path_state": "degraded_usable",
+          "reason": "degraded_usable remains admissible for workload criticality 0.80",
+          "gfs": 0.0818,
+          "prs": 0.16,
+          "fae": 2.2922
+        },
+        "seam_orchestrator": {
+          "chosen_pool_id": "pool-b",
+          "path_state": "degraded_usable",
+          "reason": "degraded_usable remains admissible for workload criticality 0.80",
+          "gfs": 0.0818,
+          "prs": 0.16,
+          "fae": 2.2922
+        }
+      }
+    },
+    {
+      "request_id": "req-009",
+      "timestamp": "2026-04-07T00:00:40Z",
+      "workload_type": "batch",
+      "strict_workload_protected": false,
+      "degraded_path_used": true,
+      "healthy_headroom_preserved": true,
+      "candidates": [
+        {
+          "pool_id": "pool-a",
+          "path_state": "healthy",
+          "admissible": false,
+          "reason": "capacity exhausted (8/8)",
+          "latency_ms": 4.0,
+          "jitter_ms": 0.5,
+          "remaining_capacity": 0,
+          "soft_saturated": true
+        },
+        {
+          "pool_id": "pool-b",
+          "path_state": "degraded_usable",
+          "admissible": true,
+          "reason": "degraded_usable remains admissible for workload criticality 0.20",
+          "latency_ms": 3.7,
+          "jitter_ms": 2.1,
+          "remaining_capacity": 5,
+          "soft_saturated": false
+        }
+      ],
+      "rejected_candidates": [
+        {
+          "pool_id": "pool-a",
+          "reason": "capacity exhausted (8/8)",
+          "path_state": "healthy"
+        }
+      ],
+      "policies": {
+        "lowest_latency": {
+          "chosen_pool_id": "pool-b",
+          "path_state": "degraded_usable",
+          "reason": "degraded_usable remains admissible for workload criticality 0.20",
+          "gfs": 0.081,
+          "prs": 0.04,
+          "fae": 0.5787
+        },
+        "binary_health_only": {
+          "chosen_pool_id": "pool-b",
+          "path_state": "degraded_usable",
+          "reason": "degraded_usable remains admissible for workload criticality 0.20",
+          "gfs": 0.081,
+          "prs": 0.04,
+          "fae": 0.5787
+        },
+        "capacity_only": {
+          "chosen_pool_id": "pool-b",
+          "path_state": "degraded_usable",
+          "reason": "degraded_usable remains admissible for workload criticality 0.20",
+          "gfs": 0.081,
+          "prs": 0.04,
+          "fae": 0.5787
+        },
+        "seam_orchestrator": {
+          "chosen_pool_id": "pool-b",
+          "path_state": "degraded_usable",
+          "reason": "degraded_usable remains admissible for workload criticality 0.20",
+          "gfs": 0.081,
+          "prs": 0.04,
+          "fae": 0.5787
+        }
+      }
+    },
+    {
+      "request_id": "req-010",
+      "timestamp": "2026-04-07T00:00:45Z",
+      "workload_type": "release",
+      "strict_workload_protected": true,
+      "degraded_path_used": false,
+      "healthy_headroom_preserved": false,
+      "candidates": [
+        {
+          "pool_id": "pool-a",
+          "path_state": "degraded_usable",
+          "admissible": false,
+          "reason": "release-critical workload blocked on degraded_usable path",
+          "latency_ms": 6.2,
+          "jitter_ms": 2.3,
+          "remaining_capacity": 3,
+          "soft_saturated": false
+        },
+        {
+          "pool_id": "pool-b",
+          "path_state": "healthy",
+          "admissible": true,
+          "reason": "healthy path",
+          "latency_ms": 4.3,
+          "jitter_ms": 0.7,
+          "remaining_capacity": 5,
+          "soft_saturated": false
+        }
+      ],
+      "rejected_candidates": [
+        {
+          "pool_id": "pool-a",
+          "reason": "release-critical workload blocked on degraded_usable path",
+          "path_state": "degraded_usable"
+        }
+      ],
+      "policies": {
+        "lowest_latency": {
+          "chosen_pool_id": "pool-b",
+          "path_state": "healthy",
+          "reason": "healthy path",
+          "gfs": 0.0615,
+          "prs": 0.0,
+          "fae": 4.3445
+        },
+        "binary_health_only": {
+          "chosen_pool_id": "pool-b",
+          "path_state": "healthy",
+          "reason": "healthy path",
+          "gfs": 0.0615,
+          "prs": 0.0,
+          "fae": 4.3445
+        },
+        "capacity_only": {
+          "chosen_pool_id": "pool-b",
+          "path_state": "healthy",
+          "reason": "healthy path",
+          "gfs": 0.0615,
+          "prs": 0.0,
+          "fae": 4.3445
+        },
+        "seam_orchestrator": {
+          "chosen_pool_id": "pool-b",
+          "path_state": "healthy",
+          "reason": "healthy path",
+          "gfs": 0.0615,
+          "prs": 0.0,
+          "fae": 4.3445
+        }
+      }
+    }
+  ]
+}

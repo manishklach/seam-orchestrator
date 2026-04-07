@@ -53,6 +53,7 @@ Takeaway:
 - the path is up
 - transport succeeds
 - admissibility still splits by workload sensitivity
+- one practical effect is tail-latency protection: stricter work can be kept off a still-live but jittery path before p99 behavior degrades further
 
 ## Scenario F: Capacity Pressure Under Gray Failure
 
@@ -95,6 +96,7 @@ The detailed tables surface:
 - capacity snapshot
 - admissibility
 - chosen / skipped reason
+- candidate decision record fields that make the routing choice auditable
 
 Structured machine-readable logs are also written under `outputs/` as JSONL.
 
